@@ -1,0 +1,2 @@
+#source_id	kingdom	phylum	class	order	family	genus	species	genome_path
+GCF_EXAMPLE_0001	Bacteria	Example_phylum	Example_class	Example_order	Example_family	Example_genus	Example_species	/absolute/path/to/example_genome.fna.gz

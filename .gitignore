@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# OS/editors
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Logs/temp
+*.log
+*.tmp
+*~
+
+# Common outputs
+MAP2B_result/
+results/
+reference_reads/
+clean_reads/
+AbsoluteQuantification/
+work/
+proc_data/
+reads_mapping/
+genotype/
+trash/
+soap/
+
+# Databases and large data
+software/map2b/database/*
+!software/map2b/database/README.md
+data/*
+!data/README.md
+examples/toy_data/
+examples/expected_outputs/
+
+# Packages
+*.tar
+*.tar.gz
+*.tgz
+*.zip

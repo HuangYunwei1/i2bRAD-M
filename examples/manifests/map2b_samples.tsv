@@ -1,0 +1,4 @@
+# Single-end: sample_id<TAB>read_file
+sample01	/absolute/path/to/sample01.fastq.gz
+# Paired-end example (uncomment and replace):
+# sample02	/absolute/path/to/sample02_R1.fastq.gz	/absolute/path/to/sample02_R2.fastq.gz

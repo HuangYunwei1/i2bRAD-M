@@ -1,0 +1,12 @@
+* text=auto eol=lf
+
+*.png binary
+*.pkl binary
+*.gz binary
+*.xls text eol=lf
+*.tsv text eol=lf
+*.sh text eol=lf
+*.pl text eol=lf
+*.py text eol=lf
+environment/third_party/soap2/soap binary
+environment/third_party/soap2/2bwt-builder binary

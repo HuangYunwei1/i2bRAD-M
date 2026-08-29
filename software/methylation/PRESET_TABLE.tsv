@@ -1,0 +1,10 @@
+enzyme_code	enzyme	context_code	context	motif	motif_start_1based	left_flank	right_flank	read_length	max_shift	both_orientations	status
+1	MspJI	1	CpG	YNCGNR	14	13	13	32	0	false	default; existing validated workflow
+1	MspJI	2	CHG	YCHGR	14	13	13	31	0	true	extended preset
+2	AspBHI	1	CpG	YSCGSR	14	13	13	32	0	false	extended preset
+2	AspBHI	2	CHG	YNCHGNR	13	12	12	31	1	true	extended preset; +/-1 motif-position tolerance
+3	RlaI	2	CHG	VCWGB	14	13	13	31	1	false	CHG-only extended preset; +/-1 motif-position tolerance
+4	SgrTI	1	CpG	SCGS	15	14	14	32	0	false	extended preset
+4	SgrTI	2	CHG	BCWGV	14	13	13	31	1	false	extended preset; +/-1 motif-position tolerance
+5	FspEI	1	CpG	CCGG	15	14	14	32	0	false	legacy preset; discontinued enzyme
+5	FspEI	2	CHG	CCWGG	14	13	13	31	1	false	legacy preset; discontinued enzyme; +/-1 motif-position tolerance
