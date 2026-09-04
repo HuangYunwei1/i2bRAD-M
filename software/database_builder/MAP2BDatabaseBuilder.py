@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build, update, or validate a MAP2B-compatible species-specific 2b-tag database.
 
-MAP2BDatabaseBuilder v0.3.1
+MAP2BDatabaseBuilder v0.3.2
 
 Modes:
   -m 1  build a new database
@@ -39,6 +39,7 @@ import os
 from pathlib import Path
 import re
 import shutil
+import subprocess
 import sys
 import tempfile
 from typing import Dict, Iterable, Iterator, List, Mapping, Sequence, Tuple
@@ -49,9 +50,10 @@ except ImportError:
     marisa_trie = None
 
 
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 DEFAULT_ENZYME_ID = 13
 DEFAULT_SHARD_SIZE = 30000
+DEFAULT_PROCESSES = 1
 ALL_ENZYME_ID = 17
 DIRECT_MAP2B_ENZYME_IDS = {3, 5, 13}
 TAXONOMY_FILENAME = "abfh_classify_with_speciename.txt.gz"
@@ -302,6 +304,40 @@ def validate_species_taxonomy_consistency(records: Sequence[TaxonomyRecord], con
             )
 
 
+def harmonize_update_taxonomy(
+    old_records: Sequence[TaxonomyRecord],
+    new_records: Sequence[TaxonomyRecord],
+) -> Tuple[int, int]:
+    """Use the existing database lineage for species already present during update."""
+    old_taxonomy_by_species = {
+        record.species: list(record.fields[1:8])
+        for record in old_records
+    }
+    changed_genomes = 0
+    changed_species = set()
+    for record in new_records:
+        authoritative_taxonomy = old_taxonomy_by_species.get(record.species)
+        if authoritative_taxonomy is None or record.fields[1:8] == authoritative_taxonomy:
+            continue
+        record.fields[1:8] = list(authoritative_taxonomy)
+        changed_genomes += 1
+        changed_species.add(record.species)
+
+    if changed_genomes:
+        species_names = sorted(changed_species)
+        preview = ", ".join(species_names[:5])
+        if len(species_names) > 5:
+            preview += f", ... (+{len(species_names) - 5} more)"
+        warn(
+            "Harmonized kingdom-to-species taxonomy for "
+            f"{changed_genomes} new genome(s) across {len(changed_species)} species "
+            f"already present in the source database ({preview}). The existing database "
+            "taxonomy was treated as authoritative; new source IDs, strain fields, and "
+            "genome paths were preserved."
+        )
+    return changed_genomes, len(changed_species)
+
+
 def validate_internal_ids(records: Sequence[TaxonomyRecord]) -> bool:
     ids = [record.internal_id for record in records]
     return len(ids) == len(set(ids)) and all(re.fullmatch(r"\d{8}", value) is not None for value in ids)
@@ -412,6 +448,35 @@ def validate_mapping_against_taxonomy(
         if extra_map:
             detail.append(f"map IDs absent from taxonomy: {', '.join(extra_map[:5])}")
         raise BuilderError(f"{path} is not cumulative/consistent with taxonomy ({'; '.join(detail)})")
+
+
+def load_or_bootstrap_update_mapping(
+    source_db: Path, taxonomy_records: Sequence[TaxonomyRecord]
+) -> List[Tuple[str, str]]:
+    """Load a cumulative ID map, or bootstrap bookkeeping for a legacy/official database."""
+    mapping_path = source_db / ID_MAP_FILENAME
+    if mapping_path.exists():
+        mapping = read_id_map(mapping_path)
+        validate_mapping_against_taxonomy(mapping, taxonomy_records, mapping_path)
+        return mapping
+
+    if not validate_internal_ids(taxonomy_records):
+        raise BuilderError(
+            f"{ID_MAP_FILENAME} is missing and the existing taxonomy does not contain "
+            "unique 8-digit MAP2B internal IDs; safe update is refused"
+        )
+
+    mapping = [
+        (f"legacy_map2b_{record.internal_id}", record.internal_id)
+        for record in taxonomy_records
+    ]
+    validate_mapping_against_taxonomy(mapping, taxonomy_records, mapping_path)
+    warn(
+        f"{ID_MAP_FILENAME} is missing; treating the source as a legacy/official MAP2B database. "
+        "Synthetic legacy source IDs will be written to the updated database for bookkeeping; "
+        "master-shard IDs and tag data are unchanged."
+    )
+    return mapping
 
 
 def shard_boundary_for_id(internal_id: int, shard_size: int) -> int:
@@ -537,61 +602,97 @@ def tuple_chars_to_text(value: Sequence[bytes]) -> str:
     return b"".join(value).decode("ascii")
 
 
+def detect_memory_limit_bytes() -> int | None:
+    """Return the smallest visible physical/cgroup memory limit, when detectable."""
+    candidates: List[int] = []
+    try:
+        page_size = int(os.sysconf("SC_PAGE_SIZE"))
+        page_count = int(os.sysconf("SC_PHYS_PAGES"))
+        if page_size > 0 and page_count > 0:
+            candidates.append(page_size * page_count)
+    except (AttributeError, OSError, TypeError, ValueError):
+        pass
+
+    for limit_path in (
+        Path("/sys/fs/cgroup/memory.max"),
+        Path("/sys/fs/cgroup/memory/memory.limit_in_bytes"),
+    ):
+        try:
+            value = limit_path.read_text(encoding="ascii").strip()
+            if value != "max":
+                limit = int(value)
+                # Some cgroup v1 installations use a near-2^63 value for unlimited.
+                if 0 < limit < (1 << 60):
+                    candidates.append(limit)
+        except (OSError, UnicodeError, ValueError):
+            pass
+    return min(candidates) if candidates else None
+
+
+def automatic_sort_memory() -> str:
+    """Choose a conservative GNU-sort buffer without exposing another CLI option."""
+    memory_limit = detect_memory_limit_bytes()
+    if memory_limit is None:
+        return "1G"
+    mib = 1024 * 1024
+    # Use at most 5% of visible memory, bounded to 64 MiB..4 GiB. This is the
+    # total sort buffer, not a per-process allocation.
+    selected = max(64 * mib, min(memory_limit // 20, 4 * 1024 * mib))
+    return f"{selected // mib}M"
+
+
+def unique_temp_parent(database_dir: Path) -> Path:
+    """Use an explicitly configured TMPDIR, otherwise keep temp files by the DB."""
+    configured = os.environ.get("TMPDIR")
+    if configured:
+        candidate = Path(configured).expanduser()
+        if candidate.is_dir() and os.access(candidate, os.W_OK):
+            return candidate.resolve()
+        warn(f"TMPDIR is not a writable directory; using the database directory instead: {candidate}")
+    return database_dir
+
+
+def find_gnu_sort() -> str:
+    """Return GNU sort executable or raise before creating large temporary files."""
+    executable = shutil.which("sort")
+    if executable is None:
+        raise BuilderError(
+            "GNU sort was not found on PATH; it is required for low-memory unique-database rebuilding"
+        )
+    try:
+        result = subprocess.run(
+            [executable, "--version"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+            timeout=10,
+        )
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise BuilderError(f"Cannot execute sort: {executable}") from exc
+    if result.returncode != 0 or b"GNU" not in result.stdout:
+        raise BuilderError(
+            "The sort command on PATH is not GNU coreutils sort; "
+            "GNU sort is required for bounded-memory rebuilding"
+        )
+    return executable
+
+
 def build_global_unique_database(
     database_dir: Path,
     taxonomy_records: Sequence[TaxonomyRecord],
     enzyme: EnzymeSpec,
     output_stem: str | None = None,
+    processes: int = DEFAULT_PROCESSES,
 ) -> Tuple[Path, Path, int, int]:
-    """Build the global species-specific, assembly-single-copy unique database.
+    """Build the global unique database with bounded memory and external sorting.
 
     Returns (marisa_path, stat_path, unique_genome_tag_records, distinct_unique_tags).
     """
     require_marisa()
     id_to_taxon = {record.internal_id: record.taxon_signature for record in taxonomy_records}
-    tag_occurrences: Dict[str, List[str]] = collections.defaultdict(list)
-    fmt = f"{enzyme.length}c"
-
-    for shard in list_master_shards(database_dir, enzyme):
-        log(f"Reading master shard {shard.name}")
-        try:
-            trie = marisa_trie.RecordTrie(fmt).mmap(str(shard))
-        except Exception as exc:
-            raise BuilderError(
-                f"Cannot read {shard} as {enzyme.length}-nt {enzyme.name} tags. "
-                "The shard may have been created with an incompatible tag length."
-            ) from exc
-        # Important MAP2B/marisa-trie invariant: duplicate keys are possible.
-        # Iterate unique keys exactly once to avoid N x N expansion of values.
-        for sid in set(trie.keys()):
-            if re.fullmatch(r"\d{12,}", sid) is None:
-                raise BuilderError(f"Invalid master-db key in {shard}: {sid!r}")
-            genome_id = sid[:8]
-            if genome_id not in id_to_taxon:
-                raise BuilderError(f"Master-db genome ID {genome_id} is absent from taxonomy: {shard}")
-            for value in trie[sid]:
-                tag = tuple_chars_to_text(value)
-                if len(tag) != enzyme.length or re.fullmatch(r"[ACGT]+", tag) is None:
-                    raise BuilderError(
-                        f"Invalid tag recovered from {shard}: {tag!r}; expected {enzyme.length}-nt A/C/G/T"
-                    )
-                tag_occurrences[tag].append(sid)
-
-    unique_pairs: List[Tuple[str, bytes]] = []
     id_unique_counts: Dict[str, int] = collections.defaultdict(int)
     distinct_unique_tags = 0
-
-    for tag, sid_list in tag_occurrences.items():
-        taxa = {id_to_taxon[sid[:8]] for sid in sid_list}
-        if len(taxa) != 1:
-            continue
-        single_copy_ids = [sid[:8] for sid in sid_list if sid[8:] == "0001"]
-        if not single_copy_ids:
-            continue
-        distinct_unique_tags += 1
-        for genome_id in single_copy_ids:
-            unique_pairs.append((tag, genome_id.encode("ascii")))
-            id_unique_counts[genome_id] += 1
+    unique_pair_count = 0
 
     stem = output_stem or f"{enzyme.name}.species.uniq"
     marisa_path = database_dir / f"{stem}.marisa"
@@ -599,8 +700,139 @@ def build_global_unique_database(
     temp_marisa = marisa_path.with_name(marisa_path.name + ".tmp")
     if temp_marisa.exists():
         temp_marisa.unlink()
-    unique_trie = marisa_trie.BytesTrie(unique_pairs)
-    unique_trie.save(str(temp_marisa))
+
+    sort_executable = find_gnu_sort()
+    sort_memory = automatic_sort_memory()
+    temp_parent = unique_temp_parent(database_dir)
+    log(
+        f"Rebuilding {enzyme.name} global unique database with GNU sort: "
+        f"processes={processes}, sort_buffer={sort_memory}, temp_parent={temp_parent}"
+    )
+
+    try:
+        with tempfile.TemporaryDirectory(
+            prefix=f".{enzyme.name}.uniq.", dir=str(temp_parent)
+        ) as temp_name:
+            temp_dir = Path(temp_name)
+            raw_path = temp_dir / "tag_occurrences.tsv"
+            sorted_path = temp_dir / "tag_occurrences.sorted.tsv"
+            master_record_count = 0
+
+            with open(raw_path, "wb", buffering=1024 * 1024) as output_handle:
+                for shard in list_master_shards(database_dir, enzyme):
+                    log(f"Reading master shard {shard.name}")
+                    try:
+                        trie = marisa_trie.BytesTrie().mmap(str(shard))
+                    except Exception as exc:
+                        raise BuilderError(
+                            f"Cannot read {shard} as a {enzyme.name} master shard. "
+                            "The shard may have an incompatible value format."
+                        ) from exc
+                    # iteritems() streams records. items()/keys() would build a
+                    # potentially huge Python list and defeat the memory reduction.
+                    for sid, tag in trie.iteritems():
+                        if len(sid) < 12 or not sid.isdigit():
+                            raise BuilderError(f"Invalid master-db key in {shard}: {sid!r}")
+                        genome_id = sid[:8]
+                        if genome_id not in id_to_taxon:
+                            raise BuilderError(
+                                f"Master-db genome ID {genome_id} is absent from taxonomy: {shard}"
+                            )
+                        if len(tag) != enzyme.length or tag.strip(b"ACGT"):
+                            raise BuilderError(
+                                f"Invalid tag recovered from {shard}: {tag!r}; "
+                                f"expected {enzyme.length}-nt A/C/G/T"
+                            )
+                        sid_bytes = sid.encode("ascii")
+                        output_handle.write(tag + b"\t" + sid_bytes + b"\n")
+                        master_record_count += 1
+                        if master_record_count % 10_000_000 == 0:
+                            log(f"  streamed {master_record_count:,} genome-tag records")
+
+            raw_size = raw_path.stat().st_size
+            log(
+                f"Wrote {master_record_count:,} genome-tag records "
+                f"({raw_size / (1024 ** 3):.2f} GiB); sorting by tag"
+            )
+            environment = dict(os.environ)
+            environment["LC_ALL"] = "C"
+            sort_command = [
+                sort_executable,
+                "--field-separator=\t",
+                "--key=1,1",
+                f"--buffer-size={sort_memory}",
+                f"--parallel={processes}",
+                f"--temporary-directory={temp_dir}",
+                f"--output={sorted_path}",
+                str(raw_path),
+            ]
+            try:
+                subprocess.run(sort_command, check=True, env=environment)
+            except (OSError, subprocess.CalledProcessError) as exc:
+                return_code = getattr(exc, "returncode", "unknown")
+                raise BuilderError(
+                    f"GNU sort failed (exit code {return_code}). "
+                    "Check temporary-disk space and scheduler limits."
+                ) from exc
+            raw_path.unlink()
+            log("Sorting finished; scanning equal-tag groups and building the unique MARISA database")
+
+            def unique_pair_stream() -> Iterator[Tuple[str, bytes]]:
+                nonlocal distinct_unique_tags, unique_pair_count
+                current_tag: bytes | None = None
+                current_taxon: str | None = None
+                multiple_taxa = False
+                single_copy_ids: List[bytes] = []
+
+                def flush_group() -> Iterator[Tuple[str, bytes]]:
+                    nonlocal distinct_unique_tags, unique_pair_count
+                    if current_tag is None or multiple_taxa or not single_copy_ids:
+                        return
+                    distinct_unique_tags += 1
+                    tag_text = current_tag.decode("ascii")
+                    for genome_id_bytes in single_copy_ids:
+                        genome_id = genome_id_bytes.decode("ascii")
+                        id_unique_counts[genome_id] += 1
+                        unique_pair_count += 1
+                        yield tag_text, genome_id_bytes
+
+                with open(sorted_path, "rb", buffering=1024 * 1024) as input_handle:
+                    for line_number, line in enumerate(input_handle, 1):
+                        try:
+                            tag, sid = line.rstrip(b"\n").split(b"\t", 1)
+                        except ValueError as exc:
+                            raise BuilderError(
+                                f"Malformed temporary sort record at line {line_number}"
+                            ) from exc
+                        if tag != current_tag:
+                            if current_tag is not None:
+                                yield from flush_group()
+                            current_tag = tag
+                            current_taxon = None
+                            multiple_taxa = False
+                            single_copy_ids = []
+
+                        genome_id_bytes = sid[:8]
+                        genome_id = genome_id_bytes.decode("ascii")
+                        taxon = id_to_taxon[genome_id]
+                        if current_taxon is None:
+                            current_taxon = taxon
+                        elif taxon != current_taxon:
+                            multiple_taxa = True
+                        if sid[8:] == b"0001":
+                            single_copy_ids.append(genome_id_bytes)
+                        if line_number % 10_000_000 == 0:
+                            log(f"  scanned {line_number:,} sorted genome-tag records")
+
+                    if current_tag is not None:
+                        yield from flush_group()
+
+            unique_trie = marisa_trie.BytesTrie(unique_pair_stream())
+            unique_trie.save(str(temp_marisa))
+    except Exception:
+        temp_marisa.unlink(missing_ok=True)
+        raise
+
     os.replace(temp_marisa, marisa_path)
 
     taxon_to_counts: Dict[str, List[int]] = collections.defaultdict(list)
@@ -621,11 +853,10 @@ def build_global_unique_database(
     os.replace(temp_stat, stat_path)
 
     log(
-        f"Saved global unique database with {len(unique_pairs):,} genome-tag records "
+        f"Saved global unique database with {unique_pair_count:,} genome-tag records "
         f"and {distinct_unique_tags:,} distinct unique tags"
     )
-    return marisa_path, stat_path, len(unique_pairs), distinct_unique_tags
-
+    return marisa_path, stat_path, unique_pair_count, distinct_unique_tags
 
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
@@ -739,7 +970,7 @@ def command_build(args: argparse.Namespace) -> None:
 
     for enzyme in enzymes:
         build_main_shards(records, enzyme, output_dir, shard_size, force=args.force)
-        build_global_unique_database(output_dir, records, enzyme)
+        build_global_unique_database(output_dir, records, enzyme, processes=args.processes)
         write_manifest(output_dir, enzyme, shard_size, taxonomy_path, "build", len(records))
 
     log(
@@ -780,8 +1011,7 @@ def command_update(args: argparse.Namespace) -> None:
     if not validate_internal_ids(old_records):
         raise BuilderError("Existing MAP2B taxonomy must contain unique 8-digit numeric IDs")
 
-    old_mapping = read_id_map(source_db / ID_MAP_FILENAME)
-    validate_mapping_against_taxonomy(old_mapping, old_records, source_db / ID_MAP_FILENAME)
+    old_mapping = load_or_bootstrap_update_mapping(source_db, old_records)
     old_source_ids = {source_id for source_id, _ in old_mapping}
     existing_internal_ids = {record.internal_id for record in old_records}
 
@@ -794,6 +1024,11 @@ def command_update(args: argparse.Namespace) -> None:
             "New input contains source_id values already present in the cumulative database mapping: "
             + ", ".join(overlap[:10])
         )
+
+    # The source database defines taxonomy for species it already contains. This avoids
+    # treating nomenclature differences (for example, GTDB versus a custom annotation)
+    # as distinct species-level taxa during global unique-tag reconstruction.
+    harmonize_update_taxonomy(old_records, new_records)
 
     # All shared-taxonomy enzyme databases must start new genomes at the same unused shard interval.
     maxima = {enzyme.name: max(master_shard_boundaries(source_db, enzyme)) for enzyme in enzymes}
@@ -831,7 +1066,7 @@ def command_update(args: argparse.Namespace) -> None:
         for enzyme in enzymes:
             temp_stem = f"{enzyme.name}.species.uniq.rebuild"
             temp_marisa, temp_stat, _, _ = build_global_unique_database(
-                workdir, combined_records, enzyme, output_stem=temp_stem
+                workdir, combined_records, enzyme, output_stem=temp_stem, processes=args.processes
             )
             rebuilt_outputs.append((enzyme, temp_marisa, temp_stat))
 
@@ -964,9 +1199,9 @@ def validate_stat_file(
             if not line.strip() or line.startswith("#"):
                 continue
             fields = line.split("\t")
-            if len(fields) != 10:
+            if len(fields) not in (10, 11):
                 raise BuilderError(
-                    f"Invalid statistics line {line_number}: expected exactly 10 columns, got {len(fields)}"
+                    f"Invalid statistics line {line_number}: expected 10 or 11 columns, got {len(fields)}"
                 )
             genome_id = fields[0]
             if genome_id in seen_ids:
@@ -979,9 +1214,10 @@ def validate_stat_file(
             try:
                 count = int(fields[8])
                 average = float(fields[9])
+                legacy_extra = float(fields[10]) if len(fields) == 11 else None
             except ValueError as exc:
                 raise BuilderError(f"Non-numeric statistics value at line {line_number}: {stat_path}") from exc
-            if count < 0 or average < 0:
+            if count < 0 or average < 0 or (legacy_extra is not None and legacy_extra < 0):
                 raise BuilderError(f"Negative statistics value at line {line_number}: {stat_path}")
             seen_ids.add(genome_id)
             parsed_counts[genome_id] = count
@@ -1121,6 +1357,13 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("-d", "--database", help="Existing database directory for mode 2/3.")
     parser.add_argument("-o", "--output-dir", help="Output database directory for mode 1/2.")
     parser.add_argument(
+        "-p",
+        "--processes",
+        type=int,
+        default=DEFAULT_PROCESSES,
+        help="CPU threads used by global unique-database sorting (default: 1).",
+    )
+    parser.add_argument(
         "-e",
         "--enzyme",
         type=parse_enzyme_selector,
@@ -1168,6 +1411,8 @@ def validate_mode_arguments(parser: argparse.ArgumentParser, args: argparse.Name
         parser.error("-m/--mode is required: 1=build, 2=update, 3=validate")
     if args.shard_size is not None and args.shard_size <= 0:
         parser.error("-s/--shard-size must be positive")
+    if args.processes <= 0:
+        parser.error("-p/--processes must be positive")
 
     if args.mode == 1:
         require_arg(parser, args, "input", "-i/--input")

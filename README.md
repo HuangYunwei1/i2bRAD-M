@@ -74,6 +74,11 @@ python3 software/database_builder/MAP2BDatabaseBuilder.py \
 
 python3 software/database_builder/MAP2BDatabaseBuilder.py \
   -m 3 -d /path/database
+
+# Optional: update an existing database; -p accelerates external sorting
+python3 software/database_builder/MAP2BDatabaseBuilder.py \
+  -m 2 -d /path/base_database -i /path/additional_genomes.tsv.gz \
+  -o /path/updated_database -p 8
 ```
 
 ### 2. Run MAP2B

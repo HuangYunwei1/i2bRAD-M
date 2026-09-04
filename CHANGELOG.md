@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — 2026-09-04
+
+- Updated MAP2BDatabaseBuilder to v0.3.2.
+- Reworked global unique-database reconstruction to use streaming and GNU external sort, substantially reducing peak memory use on large databases; added optional `-p/--processes` sort parallelism.
+- Added safe update support for official or legacy MAP2B databases without `genome_id_map.tsv`, while preserving existing internal IDs and master shards.
+- Harmonized added genomes to the base-database lineage when an existing species name has a different taxonomy annotation.
+- Extended validation to accept official 11-column statistics files as well as builder-generated 10-column files.
+- Recorded the successful GTDB-plus-five-genomes update benchmark (30 min 11 s; approximately 15.4 GiB peak memory).
+
 ## 0.1.0 — 2026-08-20
 
 - Updated MAP2BDatabaseBuilder to v0.3.1, allowing tag copy numbers above 9999 while preserving the fixed 8-digit genome-ID prefix and downstream database formats.
