@@ -11,6 +11,7 @@ enzyme_dic = {1:'CspCI', 2:'AloI', 3:'BsaXI', 4:'BaeI',
       5:'BcgI', 6:'CjeI', 7:'PpiI', 8:'PsrI', 9:'BplI',
       10:'FalI', 11:'Bsp24I', 12:'HaeIV', 13:'CjePI',
       14:'Hin4I',15:'AlfI',16:'BslFI'}
+rf_supported_enzyme_ids = {3, 5, 13}
 ############################################ ___ #################################################
 __doc__ = ''
 __author__ = 'Zheng Sun, Liu Jiang'
@@ -127,12 +128,7 @@ def main():
 	parser.add_argument('-i',help='The filepath of the sample list. Each line includes an input sample ID and the file path of corresponding DNA sequence data where each field should be separated by <tab>. A line in this file that begins with # will be ignored. like \n \
 	sample <tab> shotgun.1.fq(.gz) (<tab> shotgun.2.fq.gz)',dest='input',type=str,required=True)
 	parser.add_argument('-o',help='Output directory, default {}/MAP2B_result'.format(os.getcwd()),dest='output',type=str,default='{}/MAP2B_result'.format(os.getcwd()))
-	parser.add_argument('-e',help='Enzyme, choose from 3(BsaXI), 5(BcgI) or 13(CjePI), default 13',dest='enzyme',type=int,choices=[3, 5, 13],default=13)
-#	parser.add_argument('-e',help='enzyme, default 13 for CjePI, choose from\n \
-#	[1]CspCI  [5]BcgI  [9]BplI     [13]CjePI  [17]AllEnzyme\n \
-#	[2]AloI   [6]CjeI  [10]FalI    [14]Hin4I\n \
-#	[3]BsaXI  [7]PpiI  [11]Bsp24I  [15]AlfI\n \
-#	[4]BaeI   [8]PsrI  [12]HaeIV   [16]BslFI',dest='enzyme',type=int,default=13)
+	parser.add_argument('-e',help='Enzyme ID, choose from 1-16 (default 13=CjePI)',dest='enzyme',type=int,choices=range(1, 17),default=13)
 	parser.add_argument('-s',help='Database. Specify either GTDB or RefSeq as the pre-built database. For custom databases, provide the absolute path to the database directory, which must contain marisa database files prefixed with enzyme, default GTDB',dest='source',type=str,default='GTDB')
 #	parser.add_argument('-d',help='Database path for MAP2B pipeline, default {}'.format(def_db_dir),dest='database',type=str,default=def_db_dir)
 	parser.add_argument('-p',help='Number of processes, note that more threads may require more memory, default 1',dest='processes',type=int,default=1)
@@ -144,6 +140,10 @@ def main():
 	enzyme_id = args.enzyme
 #	enzyme_id = 13
 	enzyme = enzyme_dic[enzyme_id]
+	if enzyme_id not in rf_supported_enzyme_ids and args.gscore is None:
+		report('ERROR', 'Enzyme {0} requires G-score filtering; please provide -g (for example, -g 5)'.format(enzyme))
+	if enzyme_id not in rf_supported_enzyme_ids and args.source in ['GTDB', 'RefSeq']:
+		report('ERROR', 'Pre-built GTDB/RefSeq downloads are available only for BsaXI, BcgI and CjePI. For {0}, provide the path to a matching custom database with -s'.format(enzyme))
 	if args.source in ['GTDB', 'RefSeq']:
 		db_dir = check_dir((def_db_dir + '/' + args.source))
 		# check database
@@ -195,7 +195,7 @@ def main():
 		check_dir(O + '/1.qual')
 		for smp in data_dic.keys():
 			try:
-				if args.gscore:
+				if args.gscore is not None:
 					exe_shell('python3 {src_dir}/gscore_filter.py -i {O}/1.qual/{smp}/{smp}.{enzyme}.xls -o {O}/1.qual/{smp}/pred.result -g {gscore}'.format(src_dir = src_dir, O = O, smp = smp, enzyme= enzyme, gscore = args.gscore), 'gscore_filter')
 				else:
 					exe_shell('python3 {src_dir}/MAP2B_ML.py -i {O}/1.qual/{smp}/{smp}.{enzyme}.xls -m {config_dir}/RF_none_0238.v2.pkl -o {O}/1.qual/{smp}/pred.result'.format(src_dir = src_dir, O = O, smp = smp, enzyme= enzyme, config_dir = config_dir), 'MAP2B_ML')

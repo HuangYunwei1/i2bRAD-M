@@ -21,7 +21,7 @@ Use unique sample IDs and preferably absolute paths. A template is at `examples/
 
 ## Required consistency
 
-The same Type IIB enzyme must be used for wet-lab library construction, database construction, and MAP2B `-e`. MAP2B accepts `3` (BsaXI), `5` (BcgI), and `13` (CjePI). Do not rely on the default if the library used another enzyme.
+The same Type IIB enzyme must be used for wet-lab library construction, database construction, and MAP2B `-e`. MAP2B accepts enzyme IDs `1`-`16` (default `13`, CjePI). The bundled pre-built database download lists and random-forest model remain available only for BsaXI (`3`), BcgI (`5`), and CjePI (`13`). For the other enzymes, provide a matching custom database with `-s` and use G-score filtering with `-g`.
 
 ## Standard command
 

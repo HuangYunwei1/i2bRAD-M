@@ -1,7 +1,10 @@
 # Changelog
 
-## Unreleased — 2026-09-04
+## Unreleased — 2026-09-05
 
+- Extended the MAP2B and MAP2B-Cross-domain single-enzyme workflows to accept all 16 supported Type IIB enzymes.
+- Added the complete 16-enzyme digestion patterns and quantitative-database tag lengths; CspCI uses the 33-bp definition, and BplI/FalI/AlfI are scanned in one direction to avoid duplicate extraction.
+- Retained random-forest use for BsaXI, BcgI and CjePI; the other enzymes require a matching custom database and G-score filtering.
 - Updated MAP2BDatabaseBuilder to v0.3.2.
 - Reworked global unique-database reconstruction to use streaming and GNU external sort, substantially reducing peak memory use on large databases; added optional `-p/--processes` sort parallelism.
 - Added safe update support for official or legacy MAP2B databases without `genome_id_map.tsv`, while preserving existing internal IDs and master shards.

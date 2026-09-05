@@ -17,7 +17,7 @@ python3 software/map2b/bin/MAP2B-Cross-domain.py \
   -o results/cross_domain -p 4
 ```
 
-The enzyme must match library and database.
+The enzyme must match library and database. Enzyme IDs `1`-`16` are accepted; enzymes other than BsaXI (`3`), BcgI (`5`), and CjePI (`13`) require a matching custom database and G-score filtering with `-g`.
 
 ## Outputs
 

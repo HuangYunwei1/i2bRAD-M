@@ -17,11 +17,24 @@ __date__ = '2024/06/01 23:33:25'
 __version__ = '1.1'  # 版本更新
 ############################################ main ##################################################
 enzyme_pattern_dic = {
-    'BcgI': [32, r'(?=([AGCT]{10}CGA[AGCT]{6}TGC[AGCT]{10}))'],
-    'CjePI': [27, r'(?=([AGCT]{7}CCA[AGCT]{7}TC[AGCT]{8}))'],
+    'CspCI': [33, r'(?=([AGCT]{11}CAA[AGCT]{5}GTGG[AGCT]{10}))'],
+    'AloI': [27, r'(?=([AGCT]{7}GAAC[AGCT]{6}TCC[AGCT]{7}))'],
     'BsaXI': [27, r'(?=([AGCT]{9}AC[AGCT]{5}CTCC[AGCT]{7}))'],
-    'CspCI': [32, r'(?=([AGCT]{10}CAA[AGCT]{5}GTGG[AGCT]{10}))']
+    'BaeI': [28, r'(?=([AGCT]{10}AC[AGCT]{4}GTA[CT]C[AGCT]{7}))'],
+    'BcgI': [32, r'(?=([AGCT]{10}CGA[AGCT]{6}TGC[AGCT]{10}))'],
+    'CjeI': [28, r'(?=([AGCT]{8}CCA[AGCT]{6}GT[AGCT]{9}))'],
+    'PpiI': [27, r'(?=([AGCT]{7}GAAC[AGCT]{5}CTC[AGCT]{8}))'],
+    'PsrI': [27, r'(?=([AGCT]{7}GAAC[AGCT]{6}TAC[AGCT]{7}))'],
+    'BplI': [27, r'(?=([AGCT]{8}GAG[AGCT]{5}CTC[AGCT]{8}))'],
+    'FalI': [27, r'(?=([AGCT]{8}AAG[AGCT]{5}CTT[AGCT]{8}))'],
+    'Bsp24I': [27, r'(?=([AGCT]{8}GAC[AGCT]{6}TGG[AGCT]{7}))'],
+    'HaeIV': [27, r'(?=([AGCT]{7}GA[CT][AGCT]{5}[AG]TC[AGCT]{9}))'],
+    'CjePI': [27, r'(?=([AGCT]{7}CCA[AGCT]{7}TC[AGCT]{8}))'],
+    'Hin4I': [27, r'(?=([AGCT]{8}GA[CT][AGCT]{5}[ACG]TC[AGCT]{8}))'],
+    'AlfI': [32, r'(?=([AGCT]{10}GCA[AGCT]{6}TGC[AGCT]{10}))'],
+    'BslFI': [25, r'(?=([AGCT]{6}GGGAC[AGCT]{14}))']
 }
+single_direction_enzymes = {'BplI', 'FalI', 'AlfI'}
 
 def report(level, info):
     date_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -122,7 +135,7 @@ def read_fafq(sequence_file):
     else:
         report('ERROR', 'Unknown file format (not fastq or fasta)!')
 
-def extraction(sequence_file, value_len, enzyme_pattern, genome=None):
+def extraction(sequence_file, value_len, enzyme_pattern, genome=None, single_direction=False):
     ori_seq_ct = 0
     dig_seq_ct = 0
     trans_table = str.maketrans('ACGTNacgtn', 'TGCANtgcan')
@@ -135,12 +148,13 @@ def extraction(sequence_file, value_len, enzyme_pattern, genome=None):
                 dig_seq_ct += 1
                 new_id = f'{id}_{"+"}_{(matches.start() + 1)}'.rjust(value_len, '.')[-value_len:]
                 yield matches.group(1), new_id
-            # 反向互补序列匹配
-            reversed_complement = seq[::-1].translate(trans_table).upper()
-            for matches in re.finditer(enzyme_pattern, reversed_complement):
-                dig_seq_ct += 1
-                new_id = f'{id}_{"-"}_{(matches.start() + 1)}'.rjust(value_len, '.')[-value_len:]
-                yield matches.group(1), new_id
+            # 反向互补序列匹配；回文识别位点只扫描一次
+            if not single_direction:
+                reversed_complement = seq[::-1].translate(trans_table).upper()
+                for matches in re.finditer(enzyme_pattern, reversed_complement):
+                    dig_seq_ct += 1
+                    new_id = f'{id}_{"-"}_{(matches.start() + 1)}'.rjust(value_len, '.')[-value_len:]
+                    yield matches.group(1), new_id
     elif sequence_file.split('.')[-1] in ['cram', 'CRAM']:
         report('ERROR', 'give -g please')
     else:
@@ -151,12 +165,13 @@ def extraction(sequence_file, value_len, enzyme_pattern, genome=None):
                 dig_seq_ct += 1
                 new_id = f'{id}_{"+"}_{(matches.start() + 1)}'.rjust(value_len, '.')[-value_len:]
                 yield matches.group(1), new_id
-            # 反向互补序列匹配
-            reversed_complement = seq[::-1].translate(trans_table).upper()
-            for matches in re.finditer(enzyme_pattern, reversed_complement):
-                dig_seq_ct += 1
-                new_id = f'{id}_{"-"}_{(matches.start() + 1)}'.rjust(value_len, '.')[-value_len:]
-                yield matches.group(1), new_id
+            # 反向互补序列匹配；回文识别位点只扫描一次
+            if not single_direction:
+                reversed_complement = seq[::-1].translate(trans_table).upper()
+                for matches in re.finditer(enzyme_pattern, reversed_complement):
+                    dig_seq_ct += 1
+                    new_id = f'{id}_{"-"}_{(matches.start() + 1)}'.rjust(value_len, '.')[-value_len:]
+                    yield matches.group(1), new_id
     yield (ori_seq_ct, dig_seq_ct)
 
 def main():
@@ -166,7 +181,7 @@ def main():
         epilog=f'author:\t{__author__}\nmail:\t{__mail__}\ndate:\t{__date__}\nversion:\t{__version__}'
     )
     parser.add_argument('-i', help='fa/fq文件或者数据库文件', dest='input', type=str, required=True)
-    parser.add_argument('-e', help='酶切位点，可选 BcgI/CjePI/BsaXI/CspCI，默认为 BcgI', 
+    parser.add_argument('-e', help='酶切位点，可选16种IIB型限制性内切酶，默认为 BcgI',
                       dest='enzyme', type=str, default='BcgI', choices=enzyme_pattern_dic.keys())  # 增加参数校验
     parser.add_argument('-o', help='输出文件前缀，建议使用样本名或者物种名', dest='output', type=str, required=False)
     parser.add_argument('-g', help='基因组文件，如果输入的是 CRAM 格式，该参数必须提供', dest='genome', type=str, required=False)
@@ -194,9 +209,10 @@ def main():
             report("ERROR", f"无效的酶切位点：{args.enzyme}，可选值：{list(enzyme_pattern_dic.keys())}")
         
         enzyme_pattern = re.compile(enzyme_pattern_dic[args.enzyme][1])
+        single_direction = args.enzyme in single_direction_enzymes
         
         # 收集酶切结果和统计信息
-        results = extraction(args.input, args.value_len, enzyme_pattern, args.genome)
+        results = extraction(args.input, args.value_len, enzyme_pattern, args.genome, single_direction)
         marisa_key_lst, marisa_value_lst = [], []
         ori_seq_ct, dig_seq_ct = 0, 0
         
@@ -215,7 +231,7 @@ def main():
             report("INFO", f"Marisa索引构建完成，共处理{ori_seq_ct}条序列，得到{dig_seq_ct}个酶切片段")
         else:
             with gzip.open(f'{args.output}.{args.enzyme}.fa.gz', 'wt') as OUT:
-                results = extraction(args.input, args.value_len, enzyme_pattern, args.genome)
+                results = extraction(args.input, args.value_len, enzyme_pattern, args.genome, single_direction)
                 for item in results:
                     if not isinstance(item, tuple) or len(item) != 2 or not all(isinstance(x, int) for x in item):
                         seq, id = item

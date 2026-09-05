@@ -43,13 +43,13 @@ def main():
 	parser.add_argument('-p',help='pred file',dest='pred',type=str,required=False)
 	parser.add_argument('-s',help='the size of the sub-db when the master database is built',dest='size',type=int,required=True)
 	parser.add_argument('-o',help='out_database prefix',dest='output',type=str,required=True)
-	parser.add_argument('-e',help='enzyme, choose from BsaXI, BcgI and CjePI',dest='enzyme',choices=['BsaXI', 'BcgI', 'CjePI'],type=str,required=True)
+	parser.add_argument('-e',help='enzyme, choose from the 16 supported Type IIB enzymes',dest='enzyme',choices=['CspCI', 'AloI', 'BsaXI', 'BaeI', 'BcgI', 'CjeI', 'PpiI', 'PsrI', 'BplI', 'FalI', 'Bsp24I', 'HaeIV', 'CjePI', 'Hin4I', 'AlfI', 'BslFI'],type=str,required=True)
 	parser.add_argument('-n',help='copy number for tag, choos from s(ingle) and m(ultiple)',dest='copy',choices=['s', 'm'],type=str,required=True)
 	args=parser.parse_args()
 	info = "runing..."
 	report("INFO",info)
 	spe_lst = []
-	enzyme_dic = {'CjePI':27, 'BcgI':32, 'BsaXI':27}
+	enzyme_dic = {'CspCI':33, 'AloI':27, 'BsaXI':27, 'BaeI':28, 'BcgI':32, 'CjeI':28, 'PpiI':27, 'PsrI':27, 'BplI':27, 'FalI':27, 'Bsp24I':27, 'HaeIV':27, 'CjePI':27, 'Hin4I':27, 'AlfI':32, 'BslFI':25}
 	marisa_file = '{}.marisa'.format(args.output)
 	stat_file = '{}.stat.xls'.format(args.output)
 	fmt = '{}c'.format(enzyme_dic[args.enzyme])
