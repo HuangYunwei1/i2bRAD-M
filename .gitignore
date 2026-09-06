@@ -28,6 +28,16 @@ reads_mapping/
 genotype/
 trash/
 soap/
+Serial2BRAD16_results/
+extractNdata/
+goodqualitydata/
+goodquality-filter/
+5tagData/
+5tagfasta/
+split5Data/
+tagData/
+RNA_profile/
+RNA_DNA_ratio/
 
 # Databases and large data
 software/map2b/database/*

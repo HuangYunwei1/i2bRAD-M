@@ -1,0 +1,842 @@
+{
+  "schema_version": 2,
+  "release": "1.1",
+  "serial_junction_length": 3,
+  "broad_tolerance_per_tag": 3,
+  "derivation": {
+    "expected_length": "5 * serial_unit_length + 4 * serial_junction_length",
+    "broad_min": "expected_length - 5 * broad_tolerance_per_tag",
+    "broad_max": "expected_length + 5 * broad_tolerance_per_tag",
+    "note": "BsaXI 162-192 bp is explicitly reproduced from the 2017 training document (x=33, f=3, i=3). The other 15 broad ranges apply the same formula to the enzyme-specific serial-unit lengths reconstructed from the historical 16-enzyme five-tag extraction geometry. Inspect the empirical assembled-length histogram before changing to custom limits."
+  },
+  "enzymes": [
+    {
+      "id": 1,
+      "name": "CspCI",
+      "tag_length": 33,
+      "serial_unit_length": 38,
+      "expected_assembled_length": 202,
+      "pear_broad_min": 187,
+      "pear_broad_max": 217,
+      "patterns": [
+        "[ACGT]{11}CAA[ACGT]{5}GTGG[ACGT]{10}",
+        "[ACGT]{10}CCAC[ACGT]{5}TTG[ACGT]{11}"
+      ],
+      "windows": [
+        [
+          0,
+          55
+        ],
+        [
+          37,
+          92
+        ],
+        [
+          75,
+          130
+        ],
+        [
+          113,
+          168
+        ],
+        [
+          151,
+          215
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        38,
+        76,
+        114,
+        152
+      ],
+      "window_lengths": [
+        56,
+        56,
+        56,
+        56,
+        65
+      ],
+      "window_status": "training_logic_derived"
+    },
+    {
+      "id": 2,
+      "name": "AloI",
+      "tag_length": 27,
+      "serial_unit_length": 39,
+      "expected_assembled_length": 207,
+      "pear_broad_min": 192,
+      "pear_broad_max": 222,
+      "patterns": [
+        "[ACGT]{7}GAAC[ACGT]{6}TCC[ACGT]{7}",
+        "[ACGT]{7}GGA[ACGT]{6}GTTC[ACGT]{7}"
+      ],
+      "windows": [
+        [
+          0,
+          49
+        ],
+        [
+          38,
+          87
+        ],
+        [
+          77,
+          126
+        ],
+        [
+          116,
+          165
+        ],
+        [
+          155,
+          220
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        39,
+        78,
+        117,
+        156
+      ],
+      "window_lengths": [
+        50,
+        50,
+        50,
+        50,
+        66
+      ],
+      "window_status": "training_logic_derived"
+    },
+    {
+      "id": 3,
+      "name": "BsaXI",
+      "tag_length": 27,
+      "serial_unit_length": 33,
+      "expected_assembled_length": 177,
+      "pear_broad_min": 162,
+      "pear_broad_max": 192,
+      "historical_narrow_min": 173,
+      "historical_narrow_max": 181,
+      "patterns": [
+        "[ACGT]{9}AC[ACGT]{5}CTCC[ACGT]{7}",
+        "[ACGT]{7}GGAG[ACGT]{5}GT[ACGT]{9}"
+      ],
+      "windows": [
+        [
+          0,
+          49
+        ],
+        [
+          32,
+          81
+        ],
+        [
+          65,
+          114
+        ],
+        [
+          98,
+          147
+        ],
+        [
+          131,
+          190
+        ]
+      ],
+      "range_status": "training_explicit",
+      "window_starts_1based": [
+        1,
+        33,
+        66,
+        99,
+        132
+      ],
+      "window_lengths": [
+        50,
+        50,
+        50,
+        50,
+        60
+      ],
+      "window_status": "training_explicit"
+    },
+    {
+      "id": 4,
+      "name": "BaeI",
+      "tag_length": 28,
+      "serial_unit_length": 38,
+      "expected_assembled_length": 202,
+      "pear_broad_min": 187,
+      "pear_broad_max": 217,
+      "historical_narrow_min": 198,
+      "historical_narrow_max": 206,
+      "patterns": [
+        "[ACGT]{10}AC[ACGT]{4}GTA[CT]C[ACGT]{7}",
+        "[ACGT]{7}G[AG]TAC[ACGT]{4}GT[ACGT]{10}"
+      ],
+      "windows": [
+        [
+          0,
+          50
+        ],
+        [
+          37,
+          87
+        ],
+        [
+          75,
+          125
+        ],
+        [
+          113,
+          163
+        ],
+        [
+          151,
+          215
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        38,
+        76,
+        114,
+        152
+      ],
+      "window_lengths": [
+        51,
+        51,
+        51,
+        51,
+        65
+      ],
+      "window_status": "training_logic_derived"
+    },
+    {
+      "id": 5,
+      "name": "BcgI",
+      "tag_length": 32,
+      "serial_unit_length": 36,
+      "expected_assembled_length": 192,
+      "pear_broad_min": 177,
+      "pear_broad_max": 207,
+      "historical_narrow_min": 188,
+      "historical_narrow_max": 196,
+      "patterns": [
+        "[ACGT]{10}CGA[ACGT]{6}TGC[ACGT]{10}",
+        "[ACGT]{10}GCA[ACGT]{6}TCG[ACGT]{10}"
+      ],
+      "windows": [
+        [
+          0,
+          54
+        ],
+        [
+          35,
+          89
+        ],
+        [
+          71,
+          125
+        ],
+        [
+          107,
+          161
+        ],
+        [
+          143,
+          205
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        36,
+        72,
+        108,
+        144
+      ],
+      "window_lengths": [
+        55,
+        55,
+        55,
+        55,
+        63
+      ],
+      "window_status": "training_logic_derived"
+    },
+    {
+      "id": 6,
+      "name": "CjeI",
+      "tag_length": 28,
+      "serial_unit_length": 40,
+      "expected_assembled_length": 212,
+      "pear_broad_min": 197,
+      "pear_broad_max": 227,
+      "patterns": [
+        "[ACGT]{8}CCA[ACGT]{6}GT[ACGT]{9}",
+        "[ACGT]{9}AC[ACGT]{6}TGG[ACGT]{8}"
+      ],
+      "windows": [
+        [
+          0,
+          50
+        ],
+        [
+          39,
+          89
+        ],
+        [
+          79,
+          129
+        ],
+        [
+          119,
+          169
+        ],
+        [
+          159,
+          225
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        40,
+        80,
+        120,
+        160
+      ],
+      "window_lengths": [
+        51,
+        51,
+        51,
+        51,
+        67
+      ],
+      "window_status": "training_logic_derived"
+    },
+    {
+      "id": 7,
+      "name": "PpiI",
+      "tag_length": 27,
+      "serial_unit_length": 37,
+      "expected_assembled_length": 197,
+      "pear_broad_min": 182,
+      "pear_broad_max": 212,
+      "patterns": [
+        "[ACGT]{7}GAAC[ACGT]{5}CTC[ACGT]{8}",
+        "[ACGT]{8}GAG[ACGT]{5}GTTC[ACGT]{7}"
+      ],
+      "windows": [
+        [
+          0,
+          49
+        ],
+        [
+          36,
+          85
+        ],
+        [
+          73,
+          122
+        ],
+        [
+          110,
+          159
+        ],
+        [
+          147,
+          210
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        37,
+        74,
+        111,
+        148
+      ],
+      "window_lengths": [
+        50,
+        50,
+        50,
+        50,
+        64
+      ],
+      "window_status": "training_logic_derived"
+    },
+    {
+      "id": 8,
+      "name": "PsrI",
+      "tag_length": 27,
+      "serial_unit_length": 37,
+      "expected_assembled_length": 197,
+      "pear_broad_min": 182,
+      "pear_broad_max": 212,
+      "patterns": [
+        "[ACGT]{7}GAAC[ACGT]{6}TAC[ACGT]{7}",
+        "[ACGT]{7}GTA[ACGT]{6}GTTC[ACGT]{7}"
+      ],
+      "windows": [
+        [
+          0,
+          49
+        ],
+        [
+          36,
+          85
+        ],
+        [
+          73,
+          122
+        ],
+        [
+          110,
+          159
+        ],
+        [
+          147,
+          210
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        37,
+        74,
+        111,
+        148
+      ],
+      "window_lengths": [
+        50,
+        50,
+        50,
+        50,
+        64
+      ],
+      "window_status": "training_logic_derived"
+    },
+    {
+      "id": 9,
+      "name": "BplI",
+      "tag_length": 27,
+      "serial_unit_length": 37,
+      "expected_assembled_length": 197,
+      "pear_broad_min": 182,
+      "pear_broad_max": 212,
+      "patterns": [
+        "[ACGT]{8}GAG[ACGT]{5}CTC[ACGT]{8}"
+      ],
+      "windows": [
+        [
+          0,
+          49
+        ],
+        [
+          36,
+          85
+        ],
+        [
+          73,
+          122
+        ],
+        [
+          110,
+          159
+        ],
+        [
+          147,
+          210
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        37,
+        74,
+        111,
+        148
+      ],
+      "window_lengths": [
+        50,
+        50,
+        50,
+        50,
+        64
+      ],
+      "window_status": "training_logic_derived"
+    },
+    {
+      "id": 10,
+      "name": "FalI",
+      "tag_length": 27,
+      "serial_unit_length": 37,
+      "expected_assembled_length": 197,
+      "pear_broad_min": 182,
+      "pear_broad_max": 212,
+      "historical_narrow_min": 193,
+      "historical_narrow_max": 201,
+      "patterns": [
+        "[ACGT]{8}AAG[ACGT]{5}CTT[ACGT]{8}"
+      ],
+      "windows": [
+        [
+          0,
+          49
+        ],
+        [
+          36,
+          85
+        ],
+        [
+          73,
+          122
+        ],
+        [
+          110,
+          159
+        ],
+        [
+          147,
+          210
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        37,
+        74,
+        111,
+        148
+      ],
+      "window_lengths": [
+        50,
+        50,
+        50,
+        50,
+        64
+      ],
+      "window_status": "training_logic_derived"
+    },
+    {
+      "id": 11,
+      "name": "Bsp24I",
+      "tag_length": 27,
+      "serial_unit_length": 37,
+      "expected_assembled_length": 197,
+      "pear_broad_min": 182,
+      "pear_broad_max": 212,
+      "patterns": [
+        "[ACGT]{8}GAC[ACGT]{6}TGG[ACGT]{7}",
+        "[ACGT]{7}CCA[ACGT]{6}GTC[ACGT]{8}"
+      ],
+      "windows": [
+        [
+          0,
+          49
+        ],
+        [
+          36,
+          85
+        ],
+        [
+          73,
+          122
+        ],
+        [
+          110,
+          159
+        ],
+        [
+          147,
+          210
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        37,
+        74,
+        111,
+        148
+      ],
+      "window_lengths": [
+        50,
+        50,
+        50,
+        50,
+        64
+      ],
+      "window_status": "training_logic_derived"
+    },
+    {
+      "id": 12,
+      "name": "HaeIV",
+      "tag_length": 27,
+      "serial_unit_length": 38,
+      "expected_assembled_length": 202,
+      "pear_broad_min": 187,
+      "pear_broad_max": 217,
+      "patterns": [
+        "[ACGT]{7}GA[CT][ACGT]{5}[AG]TC[ACGT]{9}",
+        "[ACGT]{9}GA[CT][ACGT]{5}[AG]TC[ACGT]{7}"
+      ],
+      "windows": [
+        [
+          0,
+          49
+        ],
+        [
+          37,
+          86
+        ],
+        [
+          75,
+          124
+        ],
+        [
+          113,
+          162
+        ],
+        [
+          151,
+          215
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        38,
+        76,
+        114,
+        152
+      ],
+      "window_lengths": [
+        50,
+        50,
+        50,
+        50,
+        65
+      ],
+      "window_status": "training_logic_derived"
+    },
+    {
+      "id": 13,
+      "name": "CjePI",
+      "tag_length": 27,
+      "serial_unit_length": 39,
+      "expected_assembled_length": 207,
+      "pear_broad_min": 192,
+      "pear_broad_max": 222,
+      "patterns": [
+        "[ACGT]{7}CCA[ACGT]{7}TC[ACGT]{8}",
+        "[ACGT]{8}GA[ACGT]{7}TGG[ACGT]{7}"
+      ],
+      "windows": [
+        [
+          0,
+          49
+        ],
+        [
+          38,
+          87
+        ],
+        [
+          77,
+          126
+        ],
+        [
+          116,
+          165
+        ],
+        [
+          155,
+          220
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        39,
+        78,
+        117,
+        156
+      ],
+      "window_lengths": [
+        50,
+        50,
+        50,
+        50,
+        66
+      ],
+      "window_status": "training_logic_derived"
+    },
+    {
+      "id": 14,
+      "name": "Hin4I",
+      "tag_length": 27,
+      "serial_unit_length": 37,
+      "expected_assembled_length": 197,
+      "pear_broad_min": 182,
+      "pear_broad_max": 212,
+      "patterns": [
+        "[ACGT]{8}GA[CT][ACGT]{5}[GAC]TC[ACGT]{8}",
+        "[ACGT]{8}GA[CTG][ACGT]{5}[AG]TC[ACGT]{8}"
+      ],
+      "windows": [
+        [
+          0,
+          49
+        ],
+        [
+          36,
+          85
+        ],
+        [
+          73,
+          122
+        ],
+        [
+          110,
+          159
+        ],
+        [
+          147,
+          210
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        37,
+        74,
+        111,
+        148
+      ],
+      "window_lengths": [
+        50,
+        50,
+        50,
+        50,
+        64
+      ],
+      "window_status": "training_logic_derived"
+    },
+    {
+      "id": 15,
+      "name": "AlfI",
+      "tag_length": 32,
+      "serial_unit_length": 36,
+      "expected_assembled_length": 192,
+      "pear_broad_min": 177,
+      "pear_broad_max": 207,
+      "patterns": [
+        "[ACGT]{10}GCA[ACGT]{6}TGC[ACGT]{10}"
+      ],
+      "windows": [
+        [
+          0,
+          54
+        ],
+        [
+          35,
+          89
+        ],
+        [
+          71,
+          125
+        ],
+        [
+          107,
+          161
+        ],
+        [
+          143,
+          205
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        36,
+        72,
+        108,
+        144
+      ],
+      "window_lengths": [
+        55,
+        55,
+        55,
+        55,
+        63
+      ],
+      "window_status": "training_logic_derived"
+    },
+    {
+      "id": 16,
+      "name": "BslFI",
+      "tag_length": 25,
+      "serial_unit_length": 34,
+      "expected_assembled_length": 182,
+      "pear_broad_min": 167,
+      "pear_broad_max": 197,
+      "patterns": [
+        "[ACGT]{6}GGGAC[ACGT]{14}",
+        "[ACGT]{14}GTCCC[ACGT]{6}"
+      ],
+      "windows": [
+        [
+          0,
+          47
+        ],
+        [
+          33,
+          80
+        ],
+        [
+          67,
+          114
+        ],
+        [
+          101,
+          148
+        ],
+        [
+          135,
+          195
+        ]
+      ],
+      "range_status": "derived",
+      "window_starts_1based": [
+        1,
+        34,
+        68,
+        102,
+        136
+      ],
+      "window_lengths": [
+        48,
+        48,
+        48,
+        48,
+        61
+      ],
+      "window_status": "training_logic_derived"
+    }
+  ],
+  "candidate_window_derivation": {
+    "coordinate_system": "stored as 0-based inclusive ranges; user documentation also reports 1-based start and length",
+    "starts_1based": "1, x, 2x, 3x, 4x where x is enzyme-specific serial_unit_length",
+    "T1_to_T4_length": "min(tag_length + 23, 2 * tag_length - 1); BsaXI therefore reproduces 50 bp",
+    "T5_length": "pear_broad_max - 4*x; equivalent to x + 27 under the current broad formula; BsaXI therefore reproduces 60 bp",
+    "rationale": "Training-style broad candidate windows: longer than one exact tag and, for T1-T4, shorter than two exact tags. T5 may be longer because there is no sixth tag. Exact tags are recovered later by enzyme-pattern matching."
+  }
+}

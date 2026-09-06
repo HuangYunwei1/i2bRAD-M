@@ -1,0 +1,4 @@
+#Kingdom	Phylum	Class	Order	Family	Genus	Species	Sample1	Sample2
+Bacteria	Bacteroidota	Bacteroidia	Chitinophagales	Saprospiraceae	Lewinella	Lewinella_cohaerens	0.1	0.2
+Bacteria	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Sulfitobacter	Sulfitobacter_geojensis	0.2	0.1
+Bacteria	Other	Other	Other	Other	Other	Other_species	0.7	0.7

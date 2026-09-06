@@ -23,6 +23,16 @@ PYTHON_PROGRAMS = [
     ROOT / "software/methylation/build_reference_reads.py",
     ROOT / "software/methylation/extract_fixed_reads.py",
     ROOT / "software/methylation/map_and_quantify_reads.py",
+    ROOT / "software/serial_tag/serial2brad.py",
+    ROOT / "software/serial_tag/scripts/extractN.py",
+    ROOT / "software/serial_tag/scripts/goodquality.py",
+    ROOT / "software/serial_tag/scripts/common_find.py",
+    ROOT / "software/serial_tag/scripts/pear_merge.py",
+    ROOT / "software/serial_tag/scripts/fq2fasta.py",
+    ROOT / "software/serial_tag/scripts/split5.py",
+    ROOT / "software/serial_tag/scripts/recover_sample_tags.py",
+    ROOT / "software/metatranscriptome/MTKrakenProfiler.py",
+    ROOT / "software/metatranscriptome/RNADNARatio.py",
 ]
 PERL_PROGRAMS = sorted((ROOT / "software/host_snp").glob("*.pl"))
 failures: list[str] = []
@@ -59,7 +69,12 @@ for relative in [
     "software/host_snp/ENZYME_TABLE.tsv",
     "software/methylation/PRESET_TABLE.tsv",
     "docs/METHYLATION.md",
+    "docs/SERIAL_TAG.md",
+    "docs/METATRANSCRIPTOME.md",
+    "software/serial_tag/config/enzymes.json",
     "examples/manifests/map2b_samples.tsv",
+    "examples/manifests/serial_tag_samples.tsv",
+    "examples/manifests/metatranscriptome_samples.tsv",
 ]:
     report((ROOT / relative).is_file(), f"required file {relative}")
 
@@ -119,6 +134,25 @@ report(
     "MAP2B database-builder integrity",
     builder_actual,
 )
+
+serial_config = ROOT / "software/serial_tag/config/enzymes.json"
+try:
+    import json
+    enzyme_config = json.loads(serial_config.read_text(encoding="utf-8-sig"))
+    enzyme_ids = {int(item["id"]) for item in enzyme_config.get("enzymes", [])}
+    report(
+        len(enzyme_config.get("enzymes", [])) == 16 and enzyme_ids == set(range(1, 17)),
+        "serial-tag 16-enzyme configuration",
+    )
+except Exception as exc:
+    report(False, "serial-tag 16-enzyme configuration", str(exc))
+
+for manifest, expected_header in [
+    (ROOT / "examples/manifests/serial_tag_samples.tsv", "library_id\tr1\tr2\tt1\tt2\tt3\tt4\tt5"),
+    (ROOT / "examples/manifests/metatranscriptome_samples.tsv", "sample_id\tread1\tread2"),
+]:
+    first_line = manifest.read_text(encoding="utf-8-sig").splitlines()[0] if manifest.is_file() else ""
+    report(first_line == expected_header, f"manifest header {manifest.relative_to(ROOT)}")
 
 map2b = ROOT / "software/map2b"
 report(

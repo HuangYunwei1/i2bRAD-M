@@ -1,0 +1,3 @@
+library_id	r1	r2	t1	t2	t3	t4	t5
+LB01	rawdata/LB01_R1.fastq.gz	rawdata/LB01_R2.fastq.gz	Water01	Water02	Water03	Water04	Water05
+LB02	rawdata/LB02_R1.fastq.gz	rawdata/LB02_R2.fastq.gz	Water06	Water07	Water08	Water09	Water10

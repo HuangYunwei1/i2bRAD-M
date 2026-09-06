@@ -2,6 +2,9 @@
 
 ## Unreleased — 2026-09-05
 
+- Added a serial-tag preprocessing module that supports 16 Type IIB restriction enzymes and produces five position-resolved fixed-length tags for downstream profiling.
+- Added metatranscriptome species profiling with Kraken2 and optional RNA/DNA relative-abundance integration.
+- Added reviewer-facing workflow documentation and input examples for the serial-tag and metatranscriptome modules.
 - Extended the MAP2B and MAP2B-Cross-domain single-enzyme workflows to accept all 16 supported Type IIB enzymes.
 - Added the complete 16-enzyme digestion patterns and quantitative-database tag lengths; CspCI uses the 33-bp definition, and BplI/FalI/AlfI are scanned in one direction to avoid duplicate extraction.
 - Retained random-forest use for BsaXI, BcgI and CjePI; the other enzymes require a matching custom database and G-score filtering.
