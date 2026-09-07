@@ -33,9 +33,10 @@ Principal outputs include:
 
 - `RNA_species_counts.tsv`: species-level fragment-count matrix;
 - `RNA_species_abundance.tsv`: species-level relative-abundance matrix;
-- `sample_summary.tsv`: per-sample classification summary;
+- `sample_qc.tsv`: per-sample classification and quality-control summary;
 - `kraken_reports/` and `kraken_output/`: Kraken2 report and classification files;
-- `config.json` and `run.log`: analysis parameters and run record.
+- `logs/<sample>.log`: per-sample Kraken2 run log;
+- `config.json`: analysis parameters and software information.
 
 ## RNA and DNA integration
 
@@ -57,7 +58,7 @@ The principal output is `RNA_DNA_ratio.tsv`, with one row per matched sample-spe
 Sample  Species  DNA_relative_abundance  RNA_relative_abundance  RNA_DNA_ratio  log2_ratio  Status
 ```
 
-Supporting outputs record sample matching, species matching, filtering summaries, and the exact configuration.
+Supporting outputs include `sample_summary.tsv`, `unmatched_samples.tsv`, `unmatched_species.tsv`, `run.log`, and `config.json`, which record sample matching, species matching, filtering summaries, and the exact configuration.
 
 ## Example tables
 

@@ -43,9 +43,8 @@ done
 
 # Python imports and runtime versions. The exact package identities are checked
 # from conda-meta below, so marisa-trie does not need to expose a Python
-# __version__ attribute. The validated pandas Conda artifact is named 2.3.1 but
-# reports pandas.__version__ == 2.3.2 at runtime; both facts are recorded rather
-# than treating that upstream artifact mismatch as an installation error.
+# __version__ attribute. The validated pandas artifact and runtime version are
+# both 2.3.1.
 if python - <<'EOF_PY'
 import sys, warnings
 warnings.filterwarnings(
@@ -61,6 +60,7 @@ expected = {
     "sklearn": "0.24.1",
     "joblib": "1.5.1",
     "pysam": "0.23.3",
+    "pandas": "2.3.1",
 }
 actual = {
     "python": ".".join(map(str, sys.version_info[:3])),
@@ -68,6 +68,7 @@ actual = {
     "sklearn": sklearn.__version__,
     "joblib": joblib.__version__,
     "pysam": pysam.__version__,
+    "pandas": pandas.__version__,
 }
 for key, want in expected.items():
     got = actual[key]
@@ -75,10 +76,9 @@ for key, want in expected.items():
         raise SystemExit(f"{key}: expected {want}, got {got}")
 
 print("[OK]   Python imports and validated runtime versions")
-for key in ("python", "numpy", "sklearn", "joblib", "pysam"):
+for key in ("python", "numpy", "sklearn", "joblib", "pysam", "pandas"):
     print(f"       {key}: {actual[key]}")
 print("       marisa_trie: import OK")
-print(f"       pandas runtime: {pandas.__version__}")
 EOF_PY
 then
   :

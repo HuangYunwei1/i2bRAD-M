@@ -22,7 +22,7 @@ if [[ "$(uname -s)" != "Linux" || "$(uname -m)" != "x86_64" ]]; then
 fi
 
 for f in soap 2bwt-builder; do
-  [[ -x "$SOAP_DIR/$f" ]] || {
+  [[ -f "$SOAP_DIR/$f" ]] || {
     echo "ERROR: missing executable: $SOAP_DIR/$f" >&2
     exit 1
   }
