@@ -1,8 +1,8 @@
 # i2bRAD-M
 
-Computational companion repository for the Nature Protocols article:
+This repository provides the computational resources accompanying the i2bRAD-M protocol:
 
-*An Integrated 2bRAD-M (i2bRAD-M) Approach for High-Resolution, Quantitative and Cross-Domain Microbial Profiling in Challenging Environmental and Biomedical Samples*
+*Integrated 2bRAD-M Approach for Comprehensive and Cost-efficient Metagenomic Profiling of Challenging Environmental and Biomedical Specimens*
 
 ## Overview
 
@@ -11,10 +11,11 @@ This repository contains the software, environment specification, input template
 1. species-level microbial profiling with MAP2B;
 2. construction, extension, and validation of MAP2B-compatible databases;
 3. host-referenced absolute abundance estimation;
-4. host SNP and host methylation analysis;
-5. serial-tag preprocessing for five-tag libraries;
-6. metatranscriptomic species profiling and RNA/DNA integration; and
-7. cross-domain profiling of microbial and macro-organism eDNA.
+4. holo-genome analysis combining host SNP genotyping with microbial MAP2B profiling;
+5. host methylation analysis;
+6. serial-tag preprocessing for five-tag libraries;
+7. metatranscriptomic species profiling and RNA/DNA integration; and
+8. cross-domain profiling of microbial and macro-organism eDNA.
 
 Use the accompanying article for experimental design, library preparation, and the recommended analysis sequence. Use this repository for the executable commands and software interfaces.
 
@@ -111,6 +112,8 @@ python3 software/absolute_quantification/MAP2BAbsoluteQuantifier.py \
 ### 4. Methylation analysis
 
 The protocol route uses the default methylation preset, so the default enzyme option is omitted:
+
+CpG and CHG methylation analyses are performed separately using the corresponding `-t` option; see [`docs/METHYLATION.md`](docs/METHYLATION.md).
 
 ```bash
 python3 software/methylation/build_reference_reads.py \
