@@ -4,16 +4,11 @@
 
 - Added a serial-tag preprocessing module that supports 16 Type IIB restriction enzymes and produces five position-resolved fixed-length tags for downstream profiling.
 - Added metatranscriptome species profiling with Kraken2 and optional RNA/DNA relative-abundance integration.
-- Added reviewer-facing workflow documentation and input examples for the serial-tag and metatranscriptome modules.
-- Extended the MAP2B and MAP2B-Cross-domain single-enzyme workflows to accept all 16 supported Type IIB enzymes.
-- Added the complete 16-enzyme digestion patterns and quantitative-database tag lengths; CspCI uses the 33-bp definition, and BplI/FalI/AlfI are scanned in one direction to avoid duplicate extraction.
-- Retained random-forest use for BsaXI, BcgI and CjePI; the other enzymes require a matching custom database and G-score filtering.
-- Updated MAP2BDatabaseBuilder to v0.3.2.
-- Reworked global unique-database reconstruction to use streaming and GNU external sort, substantially reducing peak memory use on large databases; added optional `-p/--processes` sort parallelism.
-- Added safe update support for official or legacy MAP2B databases without `genome_id_map.tsv`, while preserving existing internal IDs and master shards.
-- Harmonized added genomes to the base-database lineage when an existing species name has a different taxonomy annotation.
-- Extended validation to accept official 11-column statistics files as well as builder-generated 10-column files.
-- Recorded the successful GTDB-plus-five-genomes update benchmark (30 min 11 s; approximately 15.4 GiB peak memory).
+- Added workflow documentation and input examples for the serial-tag and metatranscriptome modules.
+- Extended the MAP2B and MAP2B-Cross-domain workflows to support 16 Type IIB restriction enzymes with matching databases and G-score filtering.
+- Added complete 16-enzyme digestion definitions and quantitative-database tag lengths.
+- Added a Random Forest-based filtering workflow for BcgI and CjePI.
+- Updated MAP2BDatabaseBuilder to v0.3.2 with memory-efficient database updates, optional parallel sorting, compatibility with existing MAP2B databases, and expanded validation.
 
 ## 0.1.0 — 2026-08-20
 

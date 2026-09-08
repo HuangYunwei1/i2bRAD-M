@@ -37,7 +37,6 @@ The exact lock avoids dependency re-solving and is the recommended installation 
 - Conda;
 - `bash`, `gzip`, `wget`, `sha256sum`, and `ldd` available on the host.
 
-Native Windows and macOS installations have not been validated.
 
 ## Core validated tools
 

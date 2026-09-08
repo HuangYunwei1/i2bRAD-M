@@ -96,7 +96,7 @@ python3 software/map2b/bin/MAP2B.py \
   -o results/map2b -p 4
 ```
 
-The enzyme identifier must match both the library preparation and database construction. Follow the article when selecting optional filtering parameters such as the low-biomass `-g` setting.
+The enzyme identifier must match both the library preparation and database construction. The i2bRAD-M MAP2B interface supports enzyme IDs `1`-`16`, and all 16 enzymes can be analyzed using G-score filtering with `-g` and a matching database. For BcgI (`5`) and CjePI (`13`), i2bRAD-M additionally provides a Random Forest-based filtering workflow. To facilitate standard analyses, pre-built database download lists are provided for BsaXI (`3`), BcgI (`5`), and CjePI (`13`); use `-s` to provide a matching custom database for the other enzymes. Follow the article when selecting the G-score threshold.
 
 ### 3. Optional absolute quantification
 
@@ -110,7 +110,7 @@ python3 software/absolute_quantification/MAP2BAbsoluteQuantifier.py \
 
 ### 4. Methylation analysis
 
-The article-following route uses the default methylation preset, so the default enzyme option is omitted:
+The protocol route uses the default methylation preset, so the default enzyme option is omitted:
 
 ```bash
 python3 software/methylation/build_reference_reads.py \
@@ -133,7 +133,7 @@ python3 software/serial_tag/serial2brad.py \
   -e <enzyme_id> -o results/serial_tag -p 4
 ```
 
-The serial-tag workflow supports 16 Type IIB restriction enzymes. See [`docs/SERIAL_TAG.md`](docs/SERIAL_TAG.md) for the article-following stepwise route and output assignment.
+The serial-tag workflow supports 16 Type IIB restriction enzymes. See [`docs/SERIAL_TAG.md`](docs/SERIAL_TAG.md) for the stepwise protocol route and output assignment.
 
 ### 6. Optional metatranscriptome analysis
 
@@ -169,7 +169,7 @@ Tab-delimited input templates are provided in `examples/manifests/`. Replace the
 python3 tests/run_checks.py
 ```
 
-The checks verify Python syntax and existing command-line interfaces, check Perl syntax when Perl is available, confirm key file integrity, and detect common repository artifacts. These checks do not replace workflow validation with study-specific input data.
+The checks verify Python syntax and command-line interfaces, check Perl syntax when Perl is available, confirm key file integrity, and detect common repository artifacts. Use the workflow guides for analysis of study-specific input data.
 
 ## Integrity verification
 

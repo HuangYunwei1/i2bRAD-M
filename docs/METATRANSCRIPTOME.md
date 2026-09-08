@@ -6,7 +6,7 @@ This module profiles species-level signals from paired metatranscriptomic reads 
 
 `MTKrakenProfiler.py` requires Python 3.9 or later, a Kraken2 executable available in `PATH`, and a compatible Kraken2 database. The Kraken2 database is maintained outside this repository and is supplied with `-d`.
 
-The script expects paired reads that have already undergone the preprocessing appropriate for the study, such as quality control and rRNA removal. Tools such as fastp and SortMeRNA may be used for these upstream steps, but they are not called by the programs in this module.
+Use paired reads that have undergone study-appropriate preprocessing, including quality control and rRNA removal. Tools such as fastp and SortMeRNA may be used for these upstream steps.
 
 ## RNA sample manifest
 
@@ -16,7 +16,7 @@ Use a tab-separated file with the required header:
 sample_id  read1  read2
 ```
 
-Paths may be absolute or relative to the manifest. Sample identifiers must contain only letters, numbers, `.`, `_`, or `-`. See `examples/manifests/metatranscriptome_samples.tsv`.
+The header is required, the field names are case-sensitive, and each `sample_id` must be unique. Paths may be absolute or relative to the manifest. Sample identifiers must contain only letters, numbers, `.`, `_`, or `-`. See `examples/manifests/metatranscriptome_samples.tsv`.
 
 ## Species-level RNA profiling
 
@@ -46,11 +46,10 @@ Use the MAP2B species abundance table and the RNA abundance table as input files
 python3 software/metatranscriptome/RNADNARatio.py \
   -d results/map2b/Abundance.xls \
   -r results/RNA_profile/RNA_species_abundance.tsv \
-  -o results/RNA_DNA_ratio \
-  -a 0.001 -b 0.001
+  -o results/RNA_DNA_ratio
 ```
 
-`-a` and `-b` specify the minimum DNA and RNA relative abundances. Setting either threshold to `0` disables that threshold.
+Optional `-a` and `-b` parameters specify the minimum DNA and RNA relative abundances. Setting either threshold to `0` disables that threshold.
 
 The principal output is `RNA_DNA_ratio.tsv`, with one row per matched sample-species combination and the following fields:
 

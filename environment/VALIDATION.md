@@ -15,8 +15,6 @@ The check confirmed that `python`, `perl`, `soap`, `2bwt-builder`, `bowtie`, `bo
 
 `check_environment.sh` is the routine post-installation check; the functional smoke tests above document the validated package set.
 
-## Package notes
+## Package record
 
 The locked Conda artifact is `pandas-2.3.1-py39h1b6b32d_0`, and `pandas.__version__` reports `2.3.1` in the clean validated environment.
-
-scikit-learn 0.24.1 may emit a `pkg_resources` deprecation warning with the validated Setuptools version. This warning does not indicate an installation failure.

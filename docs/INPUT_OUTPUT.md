@@ -21,7 +21,7 @@ Use unique sample IDs and preferably absolute paths. A template is at `examples/
 
 ## Required consistency
 
-The same Type IIB enzyme must be used for wet-lab library construction, database construction, and MAP2B `-e`. MAP2B accepts enzyme IDs `1`-`16` (default `13`, CjePI). The bundled pre-built database download lists and random-forest model remain available only for BsaXI (`3`), BcgI (`5`), and CjePI (`13`). For the other enzymes, provide a matching custom database with `-s` and use G-score filtering with `-g`.
+The same Type IIB enzyme must be used for wet-lab library construction, database construction, and MAP2B `-e`. The i2bRAD-M MAP2B interface supports enzyme IDs `1`-`16` (default `13`, CjePI), and all 16 enzymes can be analyzed using G-score filtering with `-g` and a matching database. For BcgI (`5`) and CjePI (`13`), i2bRAD-M additionally provides a Random Forest-based filtering workflow. To facilitate standard analyses, pre-built database download lists are provided for BsaXI (`3`), BcgI (`5`), and CjePI (`13`); for the other enzymes, provide a matching custom database directory with `-s`.
 
 ## Standard command
 
@@ -31,11 +31,11 @@ python3 software/map2b/bin/MAP2B.py \
   -s /absolute/path/database -o results/map2b -p 4
 ```
 
-For low-biomass samples, the manuscript recommends evaluating `-g 5`. Document every non-default threshold.
+For low-biomass samples, the manuscript recommends evaluating `-g 5`. Record the selected threshold with the analysis.
 
 ## Principal output
 
-`Abundance.xls` is the species-level relative-abundance table. Despite its extension, it is tab-separated text. Taxonomy columns precede sample columns; the `Species` column is used by the absolute quantifier. Keep the full MAP2B result directory because it contains intermediate/checkpoint evidence.
+`Abundance.xls` is the species-level relative-abundance table. Despite its extension, it is tab-separated text. Taxonomy columns precede sample columns; the `Species` column is used by the absolute quantifier. Retain the full MAP2B result directory for reproducibility and downstream analysis.
 
 ## Database location
 
