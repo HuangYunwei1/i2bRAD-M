@@ -6,15 +6,23 @@ This repository provides the computational resources accompanying the i2bRAD-M p
 
 ## Overview
 
-This repository contains the software, environment specification, input templates, and usage documentation for the computational components of the i2bRAD-M protocol. The available analysis branches are:
+This repository contains the software, environment specification, input templates, and usage documentation for the computational components of the i2bRAD-M protocol. Following the organization of the accompanying article, the workflow comprises:
 
-1. construction, extension, and validation of MAP2B-compatible databases;
-2. species-level microbial profiling with MAP2B;
-3. host-referenced absolute abundance estimation;
-4. metatranscriptomic species profiling and RNA/DNA integration;
-5. MethylRAD-based host methylation analysis;
-6. host SNP genotyping for holo-genome analysis; and
-7. cross-domain profiling of microbial and macro-organism eDNA using single-tag or five-tag serial libraries.
+1. **Reference database construction**
+   - construction or download of a microbial MAP2B reference database;
+   - extension of a microbial database with host or other macro-organism genomes for holo-genome, absolute-quantification, or eDNA analysis.
+2. **Standard MAP2B analysis**
+   - species-level microbial profiling;
+   - optional host-referenced absolute quantification.
+3. **Extended module A: Multi-omics analysis**
+   - metatranscriptomic species profiling and RNA/DNA integration;
+   - MethylRAD-based host epigenome analysis.
+4. **Extended module B: Holo-genome analysis**
+   - host SNP genotyping;
+   - microbial profiling with MAP2B.
+5. **Extended module C: eDNA profiling**
+   - cross-domain profiling of microbial and macro-organism eDNA;
+   - direct analysis of single-tag libraries and preprocessing of five-tag serial libraries.
 
 Use the accompanying article for experimental design, library preparation, and the recommended analysis sequence. Use this repository for the executable commands and software interfaces.
 
@@ -57,22 +65,24 @@ cd ..
 
 ## Workflow guides
 
-| Analysis | Main program(s) | Documentation |
-|---|---|---|
-| Database construction and validation | `software/database_builder/MAP2BDatabaseBuilder.py` | [`docs/DATABASE_BUILDER.md`](docs/DATABASE_BUILDER.md) |
-| Microbial relative abundance | `software/map2b/bin/MAP2B.py` | [`docs/INPUT_OUTPUT.md`](docs/INPUT_OUTPUT.md) |
-| Absolute abundance | `software/absolute_quantification/MAP2BAbsoluteQuantifier.py` | [`docs/ABSOLUTE_QUANTIFICATION.md`](docs/ABSOLUTE_QUANTIFICATION.md) |
-| Metatranscriptome profiling | `MTKrakenProfiler.py` and `RNADNARatio.py` | [`docs/METATRANSCRIPTOME.md`](docs/METATRANSCRIPTOME.md) |
-| Host methylation | programs in `software/methylation/` | [`docs/METHYLATION.md`](docs/METHYLATION.md) |
-| Host SNPs | Perl programs in `software/host_snp/` | [`docs/HOST_SNP.md`](docs/HOST_SNP.md) |
-| Cross-domain eDNA | `software/map2b/bin/MAP2B-Cross-domain.py` | [`docs/CROSS_DOMAIN.md`](docs/CROSS_DOMAIN.md) |
-| Five-tag preprocessing for cross-domain eDNA | programs in `software/serial_tag/` | [`docs/SERIAL_TAG.md`](docs/SERIAL_TAG.md) |
+| Article section or module | Analysis | Main program(s) | Documentation |
+|---|---|---|---|
+| Reference database construction | Build, update, and validate MAP2B databases | `software/database_builder/MAP2BDatabaseBuilder.py` | [`docs/DATABASE_BUILDER.md`](docs/DATABASE_BUILDER.md) |
+| Standard MAP2B analysis | Microbial relative abundance | `software/map2b/bin/MAP2B.py` | [`docs/INPUT_OUTPUT.md`](docs/INPUT_OUTPUT.md) |
+| (Optional) Host-referenced absolute quantification | Host-referenced absolute quantification | `software/absolute_quantification/MAP2BAbsoluteQuantifier.py` | [`docs/ABSOLUTE_QUANTIFICATION.md`](docs/ABSOLUTE_QUANTIFICATION.md) |
+| Extended module A: Multi-omics | Metatranscriptome profiling and RNA/DNA integration | programs in `software/metatranscriptome/` | [`docs/METATRANSCRIPTOME.md`](docs/METATRANSCRIPTOME.md) |
+| Extended module A: Multi-omics | MethylRAD-based host epigenome analysis | programs in `software/methylation/` | [`docs/METHYLATION.md`](docs/METHYLATION.md) |
+| Extended module B: Holo-genome | Host SNP genotyping and microbial profiling | programs in `software/host_snp/` and `software/map2b/bin/MAP2B.py` | [`docs/HOST_SNP.md`](docs/HOST_SNP.md), [`docs/INPUT_OUTPUT.md`](docs/INPUT_OUTPUT.md) |
+| Extended module C: eDNA | Cross-domain profiling | `software/map2b/bin/MAP2B-Cross-domain.py` | [`docs/CROSS_DOMAIN.md`](docs/CROSS_DOMAIN.md) |
+| Extended module C: eDNA | Five-tag serial-library preprocessing | programs in `software/serial_tag/` | [`docs/SERIAL_TAG.md`](docs/SERIAL_TAG.md) |
 
-## Core analysis sequence
+## Computational workflow following the protocol
 
 Run commands from the repository root after activating `i2bRAD-M`. Replace example paths and enzyme identifiers with values appropriate for the library and reference database.
 
-### 1. Build and validate a database
+### 1. Reference database construction
+
+#### 1.1 Construct and validate a microbial reference database
 
 ```bash
 python3 software/database_builder/MAP2BDatabaseBuilder.py \
@@ -80,14 +90,17 @@ python3 software/database_builder/MAP2BDatabaseBuilder.py \
 
 python3 software/database_builder/MAP2BDatabaseBuilder.py \
   -m 3 -d /path/database
+```
 
-# Optional: update an existing database; -p accelerates external sorting
+#### 1.2 Extend a database for holo-genome, absolute-quantification, or eDNA analysis
+
+```bash
 python3 software/database_builder/MAP2BDatabaseBuilder.py \
   -m 2 -d /path/base_database -i /path/additional_genomes.tsv.gz \
   -o /path/updated_database -p 8
 ```
 
-### 2. Run MAP2B
+### 2. Standard MAP2B analysis
 
 ```bash
 python3 software/map2b/bin/MAP2B.py \
@@ -98,7 +111,7 @@ python3 software/map2b/bin/MAP2B.py \
 
 i2bRAD-M supports 16 Type IIB restriction enzymes through G-score-based profiling with matching databases. A Random Forest-based workflow is additionally available for BcgI (`5`) and CjePI (`13`). The enzyme identifier must match the library preparation and database; see [`docs/INPUT_OUTPUT.md`](docs/INPUT_OUTPUT.md) for database selection and filtering options.
 
-### 3. Optional absolute quantification
+### 3. Optional host-referenced absolute quantification
 
 ```bash
 python3 software/absolute_quantification/MAP2BAbsoluteQuantifier.py \
@@ -108,7 +121,9 @@ python3 software/absolute_quantification/MAP2BAbsoluteQuantifier.py \
   -o results/absolute_quantification
 ```
 
-### 4. Optional metatranscriptome analysis
+### 4. Extended module A: Multi-omics analysis
+
+#### 4.1 Metatranscriptome analysis
 
 ```bash
 python3 software/metatranscriptome/MTKrakenProfiler.py \
@@ -123,7 +138,7 @@ python3 software/metatranscriptome/RNADNARatio.py \
 
 Provide a compatible Kraken2 database with `-d`. Quality control and rRNA removal are upstream preprocessing steps and may be performed with the tools selected for the study.
 
-### 5. Methylation analysis
+#### 4.2 Epigenome analysis (MethylRAD-based)
 
 The protocol route uses the default methylation preset, so the default enzyme option is omitted:
 
@@ -142,11 +157,19 @@ python3 software/methylation/map_and_quantify_reads.py \
 
 Additional supported options are documented in [`docs/METHYLATION.md`](docs/METHYLATION.md).
 
-### 6. Host SNP analysis
+### 5. Extended module B: Holo-genome analysis
+
+#### 5.1 Host SNP genotyping
 
 Host SNP genotyping uses the stepwise Perl workflow provided in `software/host_snp/`. See [`docs/HOST_SNP.md`](docs/HOST_SNP.md) for workspace preparation, host-reference tag construction, mapping, and genotype calling.
 
-### 7. Cross-domain analysis
+#### 5.2 Microbial profiling
+
+Use the integrated host-microbial reference database and follow the standard MAP2B workflow in Section 2.
+
+### 6. Extended module C: eDNA profiling
+
+#### 6.1 Single-tag cross-domain analysis
 
 Single-tag libraries can be analyzed directly:
 
@@ -156,6 +179,8 @@ python3 software/map2b/bin/MAP2B-Cross-domain.py \
   -e <enzyme_id> -s /absolute/path/cross_domain_database \
   -o results/cross_domain -p 4
 ```
+
+#### 6.2 Five-tag serial-library preprocessing
 
 For five-tag serial libraries, first demultiplex and recover the corresponding single-tag datasets:
 
