@@ -8,14 +8,13 @@ This repository provides the computational resources accompanying the i2bRAD-M p
 
 This repository contains the software, environment specification, input templates, and usage documentation for the computational components of the i2bRAD-M protocol. The available analysis branches are:
 
-1. species-level microbial profiling with MAP2B;
-2. construction, extension, and validation of MAP2B-compatible databases;
+1. construction, extension, and validation of MAP2B-compatible databases;
+2. species-level microbial profiling with MAP2B;
 3. host-referenced absolute abundance estimation;
-4. holo-genome analysis combining host SNP genotyping with microbial MAP2B profiling;
-5. host methylation analysis;
-6. serial-tag preprocessing for five-tag libraries;
-7. metatranscriptomic species profiling and RNA/DNA integration; and
-8. cross-domain profiling of microbial and macro-organism eDNA.
+4. metatranscriptomic species profiling and RNA/DNA integration;
+5. MethylRAD-based host methylation analysis;
+6. host SNP genotyping for holo-genome analysis; and
+7. cross-domain profiling of microbial and macro-organism eDNA using single-tag or five-tag serial libraries.
 
 Use the accompanying article for experimental design, library preparation, and the recommended analysis sequence. Use this repository for the executable commands and software interfaces.
 
@@ -26,15 +25,15 @@ i2bRAD-M/
 ├── README.md
 ├── environment/                  reproducible Linux Conda environment
 ├── software/
-│   ├── map2b/                    MAP2B and cross-domain analysis
 │   ├── database_builder/         database construction and validation
+│   ├── map2b/                    MAP2B and cross-domain analysis
 │   ├── absolute_quantification/  host-referenced abundance conversion
+│   ├── metatranscriptome/        RNA profiling and RNA/DNA integration
+│   ├── methylation/              MethylRAD-based methylation workflow
 │   ├── host_snp/                 Type IIB host SNP workflow
-│   ├── methylation/              host methylation workflow
-│   ├── serial_tag/               five-tag serial-library preprocessing
-│   └── metatranscriptome/        RNA profiling and RNA/DNA integration
+│   └── serial_tag/               five-tag serial-library preprocessing
 ├── docs/                         workflow-specific documentation
-├── examples/manifests/           tab-delimited input templates
+├── examples/                     input templates and small example files
 ├── data/                         data-availability guidance
 ├── tests/                        repository and interface checks
 └── SHA256SUMS.txt                file-integrity checksums
@@ -60,14 +59,14 @@ cd ..
 
 | Analysis | Main program(s) | Documentation |
 |---|---|---|
-| Microbial relative abundance | `software/map2b/bin/MAP2B.py` | [`docs/INPUT_OUTPUT.md`](docs/INPUT_OUTPUT.md) |
 | Database construction and validation | `software/database_builder/MAP2BDatabaseBuilder.py` | [`docs/DATABASE_BUILDER.md`](docs/DATABASE_BUILDER.md) |
+| Microbial relative abundance | `software/map2b/bin/MAP2B.py` | [`docs/INPUT_OUTPUT.md`](docs/INPUT_OUTPUT.md) |
 | Absolute abundance | `software/absolute_quantification/MAP2BAbsoluteQuantifier.py` | [`docs/ABSOLUTE_QUANTIFICATION.md`](docs/ABSOLUTE_QUANTIFICATION.md) |
-| Host SNPs | Perl programs in `software/host_snp/` | [`docs/HOST_SNP.md`](docs/HOST_SNP.md) |
-| Host methylation | programs in `software/methylation/` | [`docs/METHYLATION.md`](docs/METHYLATION.md) |
-| Serial-tag preprocessing | programs in `software/serial_tag/` | [`docs/SERIAL_TAG.md`](docs/SERIAL_TAG.md) |
 | Metatranscriptome profiling | `MTKrakenProfiler.py` and `RNADNARatio.py` | [`docs/METATRANSCRIPTOME.md`](docs/METATRANSCRIPTOME.md) |
+| Host methylation | programs in `software/methylation/` | [`docs/METHYLATION.md`](docs/METHYLATION.md) |
+| Host SNPs | Perl programs in `software/host_snp/` | [`docs/HOST_SNP.md`](docs/HOST_SNP.md) |
 | Cross-domain eDNA | `software/map2b/bin/MAP2B-Cross-domain.py` | [`docs/CROSS_DOMAIN.md`](docs/CROSS_DOMAIN.md) |
+| Five-tag preprocessing for cross-domain eDNA | programs in `software/serial_tag/` | [`docs/SERIAL_TAG.md`](docs/SERIAL_TAG.md) |
 
 ## Core analysis sequence
 
@@ -109,7 +108,22 @@ python3 software/absolute_quantification/MAP2BAbsoluteQuantifier.py \
   -o results/absolute_quantification
 ```
 
-### 4. Methylation analysis
+### 4. Optional metatranscriptome analysis
+
+```bash
+python3 software/metatranscriptome/MTKrakenProfiler.py \
+  -i examples/manifests/metatranscriptome_samples.tsv \
+  -d /path/kraken2_database -o results/RNA_profile -p 8
+
+python3 software/metatranscriptome/RNADNARatio.py \
+  -d results/map2b/Abundance.xls \
+  -r results/RNA_profile/RNA_species_abundance.tsv \
+  -o results/RNA_DNA_ratio
+```
+
+Kraken2 is required for RNA taxonomic profiling. Quality control and rRNA removal are upstream preprocessing steps and may be performed with the tools selected for the study.
+
+### 5. Methylation analysis
 
 The protocol route uses the default methylation preset, so the default enzyme option is omitted:
 
@@ -128,32 +142,13 @@ python3 software/methylation/map_and_quantify_reads.py \
 
 Additional supported options are documented in [`docs/METHYLATION.md`](docs/METHYLATION.md).
 
-### 5. Optional serial-tag preprocessing
+### 6. Host SNP analysis
 
-```bash
-python3 software/serial_tag/serial2brad.py \
-  -i examples/manifests/serial_tag_samples.tsv \
-  -e <enzyme_id> -o results/serial_tag -p 4
-```
-
-The serial-tag workflow supports 16 Type IIB restriction enzymes. See [`docs/SERIAL_TAG.md`](docs/SERIAL_TAG.md) for the stepwise protocol route and output assignment.
-
-### 6. Optional metatranscriptome analysis
-
-```bash
-python3 software/metatranscriptome/MTKrakenProfiler.py \
-  -i examples/manifests/metatranscriptome_samples.tsv \
-  -d /path/kraken2_database -o results/RNA_profile -p 8
-
-python3 software/metatranscriptome/RNADNARatio.py \
-  -d results/map2b/Abundance.xls \
-  -r results/RNA_profile/RNA_species_abundance.tsv \
-  -o results/RNA_DNA_ratio
-```
-
-Kraken2 is required for RNA taxonomic profiling. Quality control and rRNA removal are upstream preprocessing steps and may be performed with the tools selected for the study.
+Host SNP genotyping uses the stepwise Perl workflow provided in `software/host_snp/`. See [`docs/HOST_SNP.md`](docs/HOST_SNP.md) for workspace preparation, host-reference tag construction, mapping, and genotype calling.
 
 ### 7. Cross-domain analysis
+
+Single-tag libraries can be analyzed directly:
 
 ```bash
 python3 software/map2b/bin/MAP2B-Cross-domain.py \
@@ -162,9 +157,19 @@ python3 software/map2b/bin/MAP2B-Cross-domain.py \
   -o results/cross_domain -p 4
 ```
 
+For five-tag serial libraries, first demultiplex and recover the corresponding single-tag datasets:
+
+```bash
+python3 software/serial_tag/serial2brad.py \
+  -i examples/manifests/serial_tag_samples.tsv \
+  -e <enzyme_id> -o results/serial_tag -p 4
+```
+
+Prepare the MAP2B sample manifest from the recovered single-tag files and run the same cross-domain command. The serial-tag workflow supports 16 Type IIB restriction enzymes; see [`docs/SERIAL_TAG.md`](docs/SERIAL_TAG.md) and [`docs/CROSS_DOMAIN.md`](docs/CROSS_DOMAIN.md).
+
 ## Input templates and data
 
-Tab-delimited input templates are provided in `examples/manifests/`. Replace the example paths and identifiers with values for the current analysis. Large sequencing datasets and reference databases are maintained outside this source-code repository; consult the article's data-availability statement and [`data/README.md`](data/README.md).
+Input manifests and small example files are provided under `examples/`. Replace the example paths and identifiers with values for the current analysis. Large sequencing datasets and reference databases are maintained outside this source-code repository; consult the article's data-availability statement and [`data/README.md`](data/README.md).
 
 ## Repository checks
 
