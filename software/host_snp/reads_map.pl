@@ -6,7 +6,7 @@ use File::Basename qw(basename);
 use File::Path qw(make_path);
 
 # Map sample-derived Type IIB tags to the padded reference with SOAP2.
-# Historical -l is removed; tag length is selected internally from -e (1-16).
+# Tag length is selected internally from -e (1-16).
 
 my %ENZYMES = (
      1 => { name => 'CspCI',  length => 33 },
@@ -27,7 +27,7 @@ my %ENZYMES = (
     16 => { name => 'BslFI',  length => 25 },
 );
 
-# Preserve the historical SOAP2 settings used by this workflow.
+# Use the SOAP2 settings defined for this workflow.
 my $SOAP_MATCH_MODE = 4;
 my $SOAP_MISMATCHES = 2;
 my $SOAP_REPEAT_MODE = 0;

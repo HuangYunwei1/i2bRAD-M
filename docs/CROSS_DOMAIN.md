@@ -17,7 +17,7 @@ python3 software/map2b/bin/MAP2B-Cross-domain.py \
   -o results/cross_domain -p 4
 ```
 
-The enzyme must match the library and database. The i2bRAD-M cross-domain interface supports enzyme IDs `1`-`16`, and all 16 enzymes can be analyzed using G-score filtering with `-g` and a matching database. For BcgI (`5`) and CjePI (`13`), i2bRAD-M additionally provides a Random Forest-based filtering workflow. To facilitate standard analyses, pre-built database download lists are provided for BsaXI (`3`), BcgI (`5`), and CjePI (`13`); for the other enzymes, provide a matching custom database directory with `-s`.
+The cross-domain workflow follows the same enzyme, database-selection, and filtering rules as standard MAP2B. The enzyme must match the library and database; see [`INPUT_OUTPUT.md`](INPUT_OUTPUT.md).
 
 ## Outputs
 

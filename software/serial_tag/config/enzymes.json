@@ -3,12 +3,6 @@
   "release": "1.1",
   "serial_junction_length": 3,
   "broad_tolerance_per_tag": 3,
-  "derivation": {
-    "expected_length": "5 * serial_unit_length + 4 * serial_junction_length",
-    "broad_min": "expected_length - 5 * broad_tolerance_per_tag",
-    "broad_max": "expected_length + 5 * broad_tolerance_per_tag",
-    "note": "BsaXI 162-192 bp is explicitly reproduced from the 2017 training document (x=33, f=3, i=3). The other 15 broad ranges apply the same formula to the enzyme-specific serial-unit lengths reconstructed from the historical 16-enzyme five-tag extraction geometry. Inspect the empirical assembled-length histogram before changing to custom limits."
-  },
   "enzymes": [
     {
       "id": 1,
@@ -44,7 +38,6 @@
           215
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         38,
@@ -58,8 +51,7 @@
         56,
         56,
         65
-      ],
-      "window_status": "training_logic_derived"
+      ]
     },
     {
       "id": 2,
@@ -95,7 +87,6 @@
           220
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         39,
@@ -109,8 +100,7 @@
         50,
         50,
         66
-      ],
-      "window_status": "training_logic_derived"
+      ]
     },
     {
       "id": 3,
@@ -120,8 +110,6 @@
       "expected_assembled_length": 177,
       "pear_broad_min": 162,
       "pear_broad_max": 192,
-      "historical_narrow_min": 173,
-      "historical_narrow_max": 181,
       "patterns": [
         "[ACGT]{9}AC[ACGT]{5}CTCC[ACGT]{7}",
         "[ACGT]{7}GGAG[ACGT]{5}GT[ACGT]{9}"
@@ -148,7 +136,6 @@
           190
         ]
       ],
-      "range_status": "training_explicit",
       "window_starts_1based": [
         1,
         33,
@@ -162,8 +149,7 @@
         50,
         50,
         60
-      ],
-      "window_status": "training_explicit"
+      ]
     },
     {
       "id": 4,
@@ -173,8 +159,6 @@
       "expected_assembled_length": 202,
       "pear_broad_min": 187,
       "pear_broad_max": 217,
-      "historical_narrow_min": 198,
-      "historical_narrow_max": 206,
       "patterns": [
         "[ACGT]{10}AC[ACGT]{4}GTA[CT]C[ACGT]{7}",
         "[ACGT]{7}G[AG]TAC[ACGT]{4}GT[ACGT]{10}"
@@ -201,7 +185,6 @@
           215
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         38,
@@ -215,8 +198,7 @@
         51,
         51,
         65
-      ],
-      "window_status": "training_logic_derived"
+      ]
     },
     {
       "id": 5,
@@ -226,8 +208,6 @@
       "expected_assembled_length": 192,
       "pear_broad_min": 177,
       "pear_broad_max": 207,
-      "historical_narrow_min": 188,
-      "historical_narrow_max": 196,
       "patterns": [
         "[ACGT]{10}CGA[ACGT]{6}TGC[ACGT]{10}",
         "[ACGT]{10}GCA[ACGT]{6}TCG[ACGT]{10}"
@@ -254,7 +234,6 @@
           205
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         36,
@@ -268,8 +247,7 @@
         55,
         55,
         63
-      ],
-      "window_status": "training_logic_derived"
+      ]
     },
     {
       "id": 6,
@@ -305,7 +283,6 @@
           225
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         40,
@@ -319,8 +296,7 @@
         51,
         51,
         67
-      ],
-      "window_status": "training_logic_derived"
+      ]
     },
     {
       "id": 7,
@@ -356,7 +332,6 @@
           210
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         37,
@@ -370,8 +345,7 @@
         50,
         50,
         64
-      ],
-      "window_status": "training_logic_derived"
+      ]
     },
     {
       "id": 8,
@@ -407,7 +381,6 @@
           210
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         37,
@@ -421,8 +394,7 @@
         50,
         50,
         64
-      ],
-      "window_status": "training_logic_derived"
+      ]
     },
     {
       "id": 9,
@@ -457,7 +429,6 @@
           210
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         37,
@@ -471,8 +442,7 @@
         50,
         50,
         64
-      ],
-      "window_status": "training_logic_derived"
+      ]
     },
     {
       "id": 10,
@@ -482,8 +452,6 @@
       "expected_assembled_length": 197,
       "pear_broad_min": 182,
       "pear_broad_max": 212,
-      "historical_narrow_min": 193,
-      "historical_narrow_max": 201,
       "patterns": [
         "[ACGT]{8}AAG[ACGT]{5}CTT[ACGT]{8}"
       ],
@@ -509,7 +477,6 @@
           210
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         37,
@@ -523,8 +490,7 @@
         50,
         50,
         64
-      ],
-      "window_status": "training_logic_derived"
+      ]
     },
     {
       "id": 11,
@@ -560,7 +526,6 @@
           210
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         37,
@@ -574,8 +539,7 @@
         50,
         50,
         64
-      ],
-      "window_status": "training_logic_derived"
+      ]
     },
     {
       "id": 12,
@@ -611,7 +575,6 @@
           215
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         38,
@@ -625,8 +588,7 @@
         50,
         50,
         65
-      ],
-      "window_status": "training_logic_derived"
+      ]
     },
     {
       "id": 13,
@@ -662,7 +624,6 @@
           220
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         39,
@@ -676,8 +637,7 @@
         50,
         50,
         66
-      ],
-      "window_status": "training_logic_derived"
+      ]
     },
     {
       "id": 14,
@@ -713,7 +673,6 @@
           210
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         37,
@@ -727,8 +686,7 @@
         50,
         50,
         64
-      ],
-      "window_status": "training_logic_derived"
+      ]
     },
     {
       "id": 15,
@@ -763,7 +721,6 @@
           205
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         36,
@@ -777,8 +734,7 @@
         55,
         55,
         63
-      ],
-      "window_status": "training_logic_derived"
+      ]
     },
     {
       "id": 16,
@@ -814,7 +770,6 @@
           195
         ]
       ],
-      "range_status": "derived",
       "window_starts_1based": [
         1,
         34,
@@ -828,15 +783,7 @@
         48,
         48,
         61
-      ],
-      "window_status": "training_logic_derived"
+      ]
     }
-  ],
-  "candidate_window_derivation": {
-    "coordinate_system": "stored as 0-based inclusive ranges; user documentation also reports 1-based start and length",
-    "starts_1based": "1, x, 2x, 3x, 4x where x is enzyme-specific serial_unit_length",
-    "T1_to_T4_length": "min(tag_length + 23, 2 * tag_length - 1); BsaXI therefore reproduces 50 bp",
-    "T5_length": "pear_broad_max - 4*x; equivalent to x + 27 under the current broad formula; BsaXI therefore reproduces 60 bp",
-    "rationale": "Training-style broad candidate windows: longer than one exact tag and, for T1-T4, shorter than two exact tags. T5 may be longer because there is no sixth tag. Exact tags are recovered later by enzyme-pattern matching."
-  }
+  ]
 }

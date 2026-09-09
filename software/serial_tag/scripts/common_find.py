@@ -119,10 +119,10 @@ def process_pair(prefix: str, forward: Path, reverse: Path, outdir: Path, backen
 def main() -> int:
     parser = argparse.ArgumentParser(description="Serial2BRAD16 step 3: batch-discover GoodQuality R1/R2 files and retain only complete pairs.")
     parser.add_argument("-d", "--input-dir", help="Directory mode: scan all GoodQuality R1/R2 files (recommended: goodqualitydata).")
-    parser.add_argument("-f", "--forward", help="Expert compatibility mode: one forward GoodQuality FASTQ.")
-    parser.add_argument("-b", "--reverse", help="Expert compatibility mode: one reverse GoodQuality FASTQ.")
+    parser.add_argument("-f", "--forward", help="One forward GoodQuality FASTQ file.")
+    parser.add_argument("-b", "--reverse", help="One reverse GoodQuality FASTQ file.")
     parser.add_argument("-o", "--outdir", default="goodquality-filter")
-    parser.add_argument("--prefix", help="Expert mode library prefix; normally inferred from filenames.")
+    parser.add_argument("--prefix", help="Optional library prefix; normally inferred from filenames.")
     parser.add_argument("--backend", choices=("sqlite", "memory"), default="sqlite")
     parser.add_argument("--temp-dir", help="Parent directory for the temporary SQLite database.")
     parser.add_argument("--gzip-output", choices=("yes", "no"), default="yes")

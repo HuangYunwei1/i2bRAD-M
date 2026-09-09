@@ -21,14 +21,14 @@ cd environment
 bash install.sh --force
 ```
 
-## Reproducibility files
+## Environment files
 
-- `env/i2bRAD-M-linux-64.validated.lock.txt` is the authoritative Linux x86_64 package set used by `install.sh`.
-- `environment.yml` is the readable declaration of direct dependencies.
-- `scripts/install_soap2.sh` installs the included SOAP2 2.19 executables after SHA256 verification.
-- `check_environment.sh` checks executable resolution, package imports, versions, and shared-library availability, including Kraken2.
+- `env/i2bRAD-M-linux-64.validated.lock.txt` contains the Linux x86_64 package set used by `install.sh`.
+- `environment.yml` lists the direct dependencies in a readable format.
+- `scripts/install_soap2.sh` installs the included SOAP2 2.19 executables.
+- `check_environment.sh` checks executable resolution, package imports, versions, and shared-library availability.
 
-The exact lock avoids dependency re-solving and is the recommended installation route.
+Use `install.sh` for installation.
 
 ## Platform requirements
 
@@ -38,7 +38,7 @@ The exact lock avoids dependency re-solving and is the recommended installation 
 - `bash`, `gzip`, `wget`, `sha256sum`, and `ldd` available on the host.
 
 
-## Core validated tools
+## Included tools
 
 - Python 3.9.23
 - Perl 5.26.2
@@ -53,6 +53,5 @@ The exact lock avoids dependency re-solving and is the recommended installation 
 - marisa-trie 0.7.7
 - pysam 0.23.3
 
-A compatible Kraken2 database is prepared separately and supplied to the metatranscriptome workflow with the database argument; database files are not included in the Conda environment or this repository.
 
 See [`VALIDATION.md`](VALIDATION.md) for the validation summary and [`THIRD_PARTY.md`](THIRD_PARTY.md) for third-party software notices.

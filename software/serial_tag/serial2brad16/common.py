@@ -149,10 +149,10 @@ def validate_config(config: dict) -> None:
                 raise ValueError(f"{e['name']}: invalid recognition pattern/tag length")
         expected = 5 * int(e["serial_unit_length"]) + 4 * int(config["serial_junction_length"])
         if expected != int(e["expected_assembled_length"]):
-            raise ValueError(f"{e['name']}: expected-length derivation is inconsistent")
+            raise ValueError(f"{e['name']}: expected assembled length is inconsistent")
         margin = 5 * int(config["broad_tolerance_per_tag"])
         if (expected - margin, expected + margin) != (int(e["pear_broad_min"]), int(e["pear_broad_max"])):
-            raise ValueError(f"{e['name']}: broad-range derivation is inconsistent")
+            raise ValueError(f"{e['name']}: assembled-read length range is inconsistent")
 
 
 def regex_probe(pattern: str) -> str:

@@ -35,8 +35,7 @@ for x in python perl soap 2bwt-builder bowtie bowtie-build pear kraken2 kraken2-
   fi
 done
 
-# Current project scripts also invoke these standard Linux utilities. They were
-# not Conda-managed in the original validated package snapshot, so availability
+# Project scripts also use these standard Linux utilities, so availability
 # (rather than prefix ownership) is the relevant release check.
 for x in gzip wget; do
   p="$(command -v "$x" 2>/dev/null || true)"
@@ -47,10 +46,8 @@ for x in gzip wget; do
   fi
 done
 
-# Python imports and runtime versions. The exact package identities are checked
-# from conda-meta below, so marisa-trie does not need to expose a Python
-# __version__ attribute. The validated pandas artifact and runtime version are
-# both 2.3.1.
+# Check Python imports and runtime versions. Package identities are checked
+# from conda-meta below; marisa-trie does not expose a Python __version__.
 if python - <<'EOF_PY'
 import sys, warnings
 warnings.filterwarnings(
@@ -81,7 +78,7 @@ for key, want in expected.items():
     if got != want:
         raise SystemExit(f"{key}: expected {want}, got {got}")
 
-print("[OK]   Python imports and validated runtime versions")
+print("[OK]   Python imports and runtime versions")
 for key in ("python", "numpy", "sklearn", "joblib", "pysam", "pandas"):
     print(f"       {key}: {actual[key]}")
 print("       marisa_trie: import OK")
@@ -92,7 +89,7 @@ else
   bad "Python import/version check"
 fi
 
-# Exact Conda artifacts expected from the validated explicit lock.
+# Conda artifacts recorded in the package lock.
 expected_meta=(
   'python-3.9.23-hc30ae73_0_cpython.json'
   'perl-5.26.2-h36c2ea0_1008.json'
@@ -114,12 +111,12 @@ expected_meta=(
 meta_missing=0
 for f in "${expected_meta[@]}"; do
   if [[ ! -f "$CONDA_PREFIX/conda-meta/$f" ]]; then
-    bad "validated Conda artifact metadata missing: $f"
+    bad "locked Conda artifact metadata missing: $f"
     meta_missing=1
   fi
 done
 if (( ! meta_missing )); then
-  ok "validated Conda artifact set"
+  ok "locked Conda artifact set"
   ok "pandas Conda artifact: 2.3.1 py39h1b6b32d_0"
 fi
 

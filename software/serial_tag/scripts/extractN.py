@@ -45,7 +45,7 @@ def process(path: Path, outdir: Path, gzip_output: str, write_rejected: bool):
 def main() -> int:
     parser = argparse.ArgumentParser(description="Serial2BRAD16 step 1: remove FASTQ reads containing N or another non-ACGT base.")
     parser.add_argument("-i", "--input", nargs="+", help="Input FASTQ(.gz) files. If omitted, scan -d.")
-    parser.add_argument("-d", "--input-dir", default="rawdata", help="Input directory (historical default: rawdata).")
+    parser.add_argument("-d", "--input-dir", default="rawdata", help="Input directory. Default: rawdata.")
     parser.add_argument("-o", "--outdir", default="extractNdata", help="Output directory (default: extractNdata).")
     parser.add_argument("--gzip-output", choices=("auto", "yes", "no"), default="auto")
     parser.add_argument("--no-rejected", action="store_true", help="Do not retain rejected .N files.")

@@ -53,7 +53,7 @@ conda activate i2bRAD-M
 cd ..
 ```
 
-`environment/install.sh` uses the exact Linux package lock in `environment/env/` and installs the included SOAP2 executables after checksum verification. The unified environment includes Kraken2 for metatranscriptomic taxonomic profiling. The readable `environment/environment.yml` is provided for dependency inspection; the exact lock is the reproducible installation route. See [`environment/README.md`](environment/README.md).
+`environment/install.sh` creates the unified environment from the supplied Linux package lock and installs the included SOAP2 executables. The readable `environment/environment.yml` lists the direct dependencies. See [`environment/README.md`](environment/README.md).
 
 ## Workflow guides
 
@@ -96,7 +96,7 @@ python3 software/map2b/bin/MAP2B.py \
   -o results/map2b -p 4
 ```
 
-The enzyme identifier must match both the library preparation and database construction. The i2bRAD-M MAP2B interface supports enzyme IDs `1`-`16`, and all 16 enzymes can be analyzed using G-score filtering with `-g` and a matching database. For BcgI (`5`) and CjePI (`13`), i2bRAD-M additionally provides a Random Forest-based filtering workflow. To facilitate standard analyses, pre-built database download lists are provided for BsaXI (`3`), BcgI (`5`), and CjePI (`13`); use `-s` to provide a matching custom database for the other enzymes. Follow the article when selecting the G-score threshold.
+i2bRAD-M supports 16 Type IIB restriction enzymes through G-score-based profiling with matching databases. A Random Forest-based workflow is additionally available for BcgI (`5`) and CjePI (`13`). The enzyme identifier must match the library preparation and database; see [`docs/INPUT_OUTPUT.md`](docs/INPUT_OUTPUT.md) for database selection and filtering options.
 
 ### 3. Optional absolute quantification
 
@@ -121,7 +121,7 @@ python3 software/metatranscriptome/RNADNARatio.py \
   -o results/RNA_DNA_ratio
 ```
 
-Kraken2 is included in the unified `i2bRAD-M` environment for RNA taxonomic profiling. Prepare a compatible Kraken2 database separately and supply its path with `-d`. Quality control and rRNA removal are upstream preprocessing steps and may be performed with the tools selected for the study.
+Provide a compatible Kraken2 database with `-d`. Quality control and rRNA removal are upstream preprocessing steps and may be performed with the tools selected for the study.
 
 ### 5. Methylation analysis
 
@@ -171,21 +171,16 @@ Prepare the MAP2B sample manifest from the recovered single-tag files and run th
 
 Input manifests and small example files are provided under `examples/`. Replace the example paths and identifiers with values for the current analysis. Large sequencing datasets and reference databases are maintained outside this source-code repository; consult the article's data-availability statement and [`data/README.md`](data/README.md).
 
-## Repository checks
-
-```bash
-python3 tests/run_checks.py
-```
-
-The checks verify Python syntax and command-line interfaces, check Perl syntax when Perl is available, confirm key file integrity, and detect common repository artifacts. Use the workflow guides for analysis of study-specific input data.
-
-## Integrity verification
+## Verification
 
 From the repository root on Linux:
 
 ```bash
+python3 tests/run_checks.py
 sha256sum -c SHA256SUMS.txt
 ```
+
+These commands check the repository interfaces and file integrity.
 
 ## Citation and use
 

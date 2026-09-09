@@ -1,19 +1,6 @@
-# i2bRAD-M human-readable Conda dependency specification.
-#
-# IMPORTANT:
-#   The publication-grade, clean-install-validated Linux x86_64 route is:
-#       bash install.sh
-#   which uses env/i2bRAD-M-linux-64.validated.lock.txt.
-#
-# This YAML is retained because it is the conventional Conda environment
-# manifest expected in research software repositories. It expresses the
-# intended direct dependencies, but the exact solve is not authoritative:
-# Conda 4.12.0 on the validated CentOS 7 / glibc 2.17 host could not solve
-# this legacy/modern combination from current repodata.
-#
-# SOAP2 2.19 is not listed here because the upstream Bioconda soapaligner
-# package is 2.21 and has incompatible historical metadata. The validated
-# installer adds the exact SOAP2 2.19 binaries after creating the environment.
+# Human-readable Conda dependency specification for i2bRAD-M.
+# Use `bash install.sh` for installation from the supplied Linux package lock.
+# SOAP2 2.19 is installed by the accompanying installation script.
 
 name: i2bRAD-M
 channels:
@@ -41,11 +28,8 @@ dependencies:
   - pear=0.9.6
   - kraken2=2.1.2=pl5262h7d875b9_0
 
-  # Utilities used by project scripts. In the exact validated installation,
-  # gzip/wget are checked as host utilities because they were not Conda-managed
-  # in the original validated package snapshot.
+  # Utilities used by project scripts
   - gzip
   - wget
 
-  # zlib generation used by the validated combined runtime
   - libzlib=1.3.2

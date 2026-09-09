@@ -1,6 +1,6 @@
 # Host methylation workflow
 
-The repository contains **one current methylation module** at `software/methylation/`; it is not divided into single-/multi-enzyme versions.
+The methylation module at `software/methylation/` supports reference-read construction, fixed-length read extraction, and site-level methylation quantification for CpG and CHG contexts.
 
 1. `build_reference_reads.py` builds methylation-associated reference reads.
 2. `extract_fixed_reads.py` extracts matching sample reads.
@@ -33,7 +33,7 @@ sample_id	fastq
 sample01	/absolute/path/sample01_R1.fastq.gz
 ```
 
-Use the same two-column manifest for extraction and mapping. Current scripts process single-end or R1 reads.
+Use the same two-column manifest for extraction and mapping, with one single-end or R1 read file per sample.
 
 ## Main outputs
 
@@ -41,7 +41,7 @@ Use the same two-column manifest for extraction and mapping. Current scripts pro
 - `count_matrix.tsv.gz`, `rpm_matrix.tsv.gz`, `m_index_matrix.tsv.gz`
 - `sample_qc.tsv`, `config.json`, and per-sample mapping logs
 
-The site-level file is the principal auditable output.
+The site-level file is the principal output for downstream analysis.
 
 ## Advanced options
 

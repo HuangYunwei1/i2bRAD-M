@@ -26,7 +26,7 @@ def convert(inp: Path, out: Path):
 def main() -> int:
     parser = argparse.ArgumentParser(description="Serial2BRAD16 step 5: batch-convert PEAR .assembled.fastq files to FASTA.")
     parser.add_argument("-d", "--input-dir", help="Directory mode (recommended: 5tagData).")
-    parser.add_argument("-i", "--input", help="Expert compatibility mode: one assembled FASTQ(.gz).")
+    parser.add_argument("-i", "--input", help="One assembled FASTQ(.gz) file.")
     parser.add_argument("-o", "--output", help="Output FASTA(.gz); valid only with one -i input.")
     parser.add_argument("--outdir", default="5tagfasta")
     parser.add_argument("--gzip-output", choices=("yes", "no"), default="no")

@@ -16,11 +16,9 @@ The enzyme table is `software/host_snp/ENZYME_TABLE.tsv`.
 
 ```bash
 conda activate i2bRAD-M
-perl -v
-gzip --version
-which soap
-which 2bwt-builder
 ```
+
+If needed, run `environment/check_environment.sh` from the repository to verify the installed tools.
 
 ## Suggested layout
 

@@ -25,7 +25,7 @@ python3 software/database_builder/MAP2BDatabaseBuilder.py \
   -e <enzyme_id> -o /path/new_database
 ```
 
-Mode 1 defaults to CjePI (`-e 13`) and a shard size of 30000. Specify the enzyme explicitly for reproducible analysis and use a new output directory. The optional `--force` setting is intended for a deliberate rebuild of recognized database files.
+Mode 1 defaults to CjePI (`-e 13`) and a shard size of 30000. Specify the enzyme explicitly and use a new output directory.
 
 ## Validate (`-m 3`)
 
@@ -46,7 +46,7 @@ python3 software/database_builder/MAP2BDatabaseBuilder.py \
   -p 8
 ```
 
-Mode 2 normally detects the enzyme and shard size from the base database. Existing MAP2B databases can serve as the base database when their taxonomy table contains valid unique identifiers. Use unique source IDs for the added genomes. `-p/--processes` controls parallel sorting during global unique-database reconstruction and defaults to 1. A new output directory is recommended, and temporary working files are managed automatically.
+Mode 2 normally detects the enzyme and shard size from the base database. Existing MAP2B databases can serve as the base database when their taxonomy table contains valid unique identifiers. Use unique source IDs for the added genomes. `-p/--processes` controls the number of processes used during database updating and defaults to 1. Use a new output directory; temporary files are removed automatically when the run finishes.
 
 ## Cross-domain database
 
@@ -54,4 +54,4 @@ Start from a microbial database and use mode 2 to add biologically relevant host
 
 ## Files to retain
 
-Retain the complete database directory, Builder version, input manifest, enzyme setting, validation record, and database checksums. The checksum of the repository copy of the Builder is recorded in `software/database_builder/SHA256SUMS.txt`.
+Retain the complete database directory, input manifest, enzyme setting, and Builder version used for the analysis.

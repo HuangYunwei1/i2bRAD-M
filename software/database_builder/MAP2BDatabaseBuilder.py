@@ -393,7 +393,7 @@ def read_id_map(path: Path) -> List[Tuple[str, str]]:
     if not path.exists():
         raise BuilderError(
             f"Required cumulative source-ID mapping is missing: {path}. "
-            "Safe update requires genome_id_map.tsv from a previous custom build/update."
+            "A valid genome_id_map.tsv is required for this database update."
         )
     mapping: List[Tuple[str, str]] = []
     with open(path, "r", encoding="utf-8") as handle:
@@ -440,7 +440,7 @@ def validate_mapping_against_taxonomy(
 def load_or_bootstrap_update_mapping(
     source_db: Path, taxonomy_records: Sequence[TaxonomyRecord]
 ) -> List[Tuple[str, str]]:
-    """Load a cumulative ID map or initialize update bookkeeping from an existing MAP2B database."""
+    """Load an ID map or initialize one from an existing MAP2B database."""
     mapping_path = source_db / ID_MAP_FILENAME
     if mapping_path.exists():
         mapping = read_id_map(mapping_path)
@@ -450,7 +450,7 @@ def load_or_bootstrap_update_mapping(
     if not validate_internal_ids(taxonomy_records):
         raise BuilderError(
             f"{ID_MAP_FILENAME} is missing and the existing taxonomy does not contain "
-            "unique 8-digit MAP2B internal IDs; safe update is refused"
+            "unique 8-digit MAP2B internal IDs; the database cannot be updated"
         )
 
     mapping = [
@@ -459,9 +459,7 @@ def load_or_bootstrap_update_mapping(
     ]
     validate_mapping_against_taxonomy(mapping, taxonomy_records, mapping_path)
     warn(
-        f"{ID_MAP_FILENAME} is not present; initializing update bookkeeping from the existing MAP2B taxonomy. "
-        "Generated source labels will be written to the updated database; existing master-shard IDs "
-        "and tag data are preserved."
+        f"{ID_MAP_FILENAME} is not present; an ID map will be initialized from the existing MAP2B taxonomy."
     )
     return mapping
 

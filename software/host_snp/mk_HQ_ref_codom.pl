@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Getopt::Long qw(GetOptions);
 
-# Convert ref_tag FASTA into the legacy HQ_ref_codom table expected by
+# Convert ref_tag FASTA into the HQ_ref_codom table expected by
 # codom_calling.pl. This converter is enzyme-agnostic: it preserves whatever
 # tag length was generated upstream by Extract_cut_site.pl.
 
@@ -67,7 +67,7 @@ Defaults:
   output = HQ_ref_codom
 
 This script is enzyme-agnostic and automatically preserves the upstream tag
-length. The trailing "100 100" fields are retained only for legacy format
+length. The trailing "100 100" fields are retained for format
 compatibility; codom_calling.pl does not interpret them as parent information.
 USAGE
     exit($exit // 0);

@@ -6,7 +6,7 @@ use File::Path qw(make_path);
 
 # Extract Type IIB reference tags from a genome.
 # The user selects one enzyme with -e (1-16). Recognition patterns and tag
-# lengths are internal; the historical -c and -l parameters are removed.
+# lengths are selected internally from -e.
 
 my %ENZYMES = (
      1 => { name => 'CspCI',  length => 33, patterns => [ '[ACGT]{11}CAA[ACGT]{5}GTGG[ACGT]{10}', '[ACGT]{10}CCAC[ACGT]{5}TTG[ACGT]{11}' ] },
@@ -94,7 +94,7 @@ sub process_record {
             my $tag = $1;
             die "Internal enzyme definition error: extracted tag length " . length($tag) .
                 " != expected $length\n" unless length($tag) == $length;
-            my $end = pos($seq);  # 1-based end position, preserving the historical convention
+            my $end = pos($seq);  # 1-based end position
             $hits{$end} = $tag;
         }
     }
@@ -106,7 +106,7 @@ sub process_record {
         my $header = ">$id-$count-$end";
         my $tag = $hits{$end};
         print {$TAG} "$header\n$tag\n";
-        # Preserve the historical SOAP2 padding design used by Extract_cut_site.pl.
+        # Apply the SOAP2 padding design used by this workflow.
         print {$REF} "$header\n$tag", ('A' x 58), "\n";
     }
 }

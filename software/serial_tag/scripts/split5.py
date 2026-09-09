@@ -49,11 +49,11 @@ def split_one(inp: Path, outdir: Path, prefix: str, windows, compressed: bool):
 def main() -> int:
     parser = argparse.ArgumentParser(description="Serial2BRAD16 step 6: batch-split each assembled read into five overlapping candidate windows; this is not final fixed-length extraction.")
     parser.add_argument("-d", "--input-dir", help="Directory mode (recommended: 5tagfasta).")
-    parser.add_argument("-i", "--input", help="Expert compatibility mode: one assembled FASTA(.gz).")
+    parser.add_argument("-i", "--input", help="One assembled FASTA(.gz) file.")
     parser.add_argument("-e", "--enzyme", required=True, type=int, choices=range(1, 17), help="One global enzyme preset ID (1-16 only).")
     parser.add_argument("-o", "--outdir", default="split5Data")
     parser.add_argument("--prefix", help="Optional prefix override for one -i file.")
-    parser.add_argument("--windows", help="Expert override: five inclusive 0-based ranges, e.g. 0-49,32-81,65-114,98-147,131-190")
+    parser.add_argument("--windows", help="Optional five inclusive 0-based ranges, e.g. 0-49,32-81,65-114,98-147,131-190")
     parser.add_argument("--config")
     parser.add_argument("--gzip-output", choices=("yes", "no"), default="no")
     args = parser.parse_args()

@@ -52,9 +52,9 @@ def count_fasta(path: Path) -> int:
 
 
 def print_enzymes(config):
-    print("ID\tEnzyme\tTag_bp\tSerial_unit_x\tExpected_bp\tBroad_min\tBroad_max\tRange_status")
+    print("ID\tEnzyme\tTag_bp\tSerial_unit_x\tExpected_bp\tBroad_min\tBroad_max")
     for e in config["enzymes"]:
-        print(f"{e['id']}\t{e['name']}\t{e['tag_length']}\t{e['serial_unit_length']}\t{e['expected_assembled_length']}\t{e['pear_broad_min']}\t{e['pear_broad_max']}\t{e['range_status']}")
+        print(f"{e['id']}\t{e['name']}\t{e['tag_length']}\t{e['serial_unit_length']}\t{e['expected_assembled_length']}\t{e['pear_broad_min']}\t{e['pear_broad_max']}")
 
 
 def main() -> int:
@@ -66,8 +66,8 @@ def main() -> int:
     parser.add_argument("-o", "--outdir", default="Serial2BRAD16_results")
     parser.add_argument("-p", "--threads", type=int, default=1)
     parser.add_argument("--pear", default="pear")
-    parser.add_argument("--pear-min", type=int, help="Expert custom minimum; requires --pear-max.")
-    parser.add_argument("--pear-max", type=int, help="Expert custom maximum; requires --pear-min.")
+    parser.add_argument("--pear-min", type=int, help="Custom minimum assembled-read length; requires --pear-max.")
+    parser.add_argument("--pear-max", type=int, help="Custom maximum assembled-read length; requires --pear-min.")
     parser.add_argument("--min-q", type=int, default=20)
     parser.add_argument("--min-percent", type=float, default=80.0)
     parser.add_argument("--phred-offset", type=int, choices=(33,64), default=33)

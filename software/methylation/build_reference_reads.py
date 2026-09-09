@@ -26,7 +26,6 @@ COMPLEMENT = str.maketrans(
 PRESETS = {
     "MspJI": {
         "aliases": {"1", "mspji"},
-        "legacy": False,
         "contexts": {
             "CpG": {
                 "motif": "YNCGNR",
@@ -48,7 +47,6 @@ PRESETS = {
     },
     "AspBHI": {
         "aliases": {"2", "aspbhi"},
-        "legacy": False,
         "contexts": {
             "CpG": {
                 "motif": "YSCGSR",
@@ -70,7 +68,6 @@ PRESETS = {
     },
     "RlaI": {
         "aliases": {"3", "rlai"},
-        "legacy": False,
         "contexts": {
             "CHG": {
                 "motif": "VCWGB",
@@ -84,7 +81,6 @@ PRESETS = {
     },
     "SgrTI": {
         "aliases": {"4", "sgrti"},
-        "legacy": False,
         "contexts": {
             "CpG": {
                 "motif": "SCGS",
@@ -106,7 +102,6 @@ PRESETS = {
     },
     "FspEI": {
         "aliases": {"5", "fspei"},
-        "legacy": True,
         "contexts": {
             "CpG": {
                 "motif": "CCGG",
@@ -286,7 +281,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-r", "--reference", required=True, help="Reference FASTA or FASTA.GZ.")
     parser.add_argument(
         "-e", "--enzyme", default=None,
-        help="Enzyme preset: 1=MspJI, 2=AspBHI, 3=RlaI, 4=SgrTI, 5=FspEI (legacy). Default: MspJI.",
+        help="Enzyme preset: 1=MspJI, 2=AspBHI, 3=RlaI, 4=SgrTI, 5=FspEI. Default: MspJI.",
     )
     parser.add_argument(
         "-t", "--context", default=None,
@@ -433,8 +428,6 @@ def main() -> None:
         if index_dir.exists():
             shutil.rmtree(index_dir)
 
-        if structure["mode"] == "preset" and PRESETS[structure["enzyme"]].get("legacy"):
-            print("WARNING: FspEI is retained as a legacy preset for historical/existing datasets.", file=sys.stderr)
 
         sequence_counts, total_sites, ambiguous_sites = first_pass(reference, structure)
         usable_sites = sum(sequence_counts.values())

@@ -39,8 +39,8 @@ For low-biomass samples, the manuscript recommends evaluating `-g 5`. Record the
 
 ## Database location
 
-A full biological database is not bundled. Keep generated/downloaded databases outside Git (recommended) or locally under `software/map2b/database/`, which is ignored except for its README.
+A full biological database is not bundled. Store prepared MAP2B databases in a suitable local directory and provide the database path with `-s`.
 
 ## Run record
 
-Record repository commit/version, environment version, database version/checksum, exact command, enzyme, sample-manifest checksum, and non-default thresholds.
+Record the software and database versions, enzyme, exact command, and non-default thresholds used for the analysis.

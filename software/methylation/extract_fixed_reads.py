@@ -27,7 +27,6 @@ COMPLEMENT = str.maketrans(
 PRESETS = {
     "MspJI": {
         "aliases": {"1", "mspji"},
-        "legacy": False,
         "contexts": {
             "CpG": {
                 "motif": "YNCGNR",
@@ -49,7 +48,6 @@ PRESETS = {
     },
     "AspBHI": {
         "aliases": {"2", "aspbhi"},
-        "legacy": False,
         "contexts": {
             "CpG": {
                 "motif": "YSCGSR",
@@ -71,7 +69,6 @@ PRESETS = {
     },
     "RlaI": {
         "aliases": {"3", "rlai"},
-        "legacy": False,
         "contexts": {
             "CHG": {
                 "motif": "VCWGB",
@@ -85,7 +82,6 @@ PRESETS = {
     },
     "SgrTI": {
         "aliases": {"4", "sgrti"},
-        "legacy": False,
         "contexts": {
             "CpG": {
                 "motif": "SCGS",
@@ -107,7 +103,6 @@ PRESETS = {
     },
     "FspEI": {
         "aliases": {"5", "fspei"},
-        "legacy": True,
         "contexts": {
             "CpG": {
                 "motif": "CCGG",
@@ -415,7 +410,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-i", "--samples", required=True,
                         help="Two-column samples.tsv with sample_id and fastq.")
     parser.add_argument("-e", "--enzyme", default=None,
-                        help="Enzyme preset: 1=MspJI, 2=AspBHI, 3=RlaI, 4=SgrTI, 5=FspEI (legacy). Default: MspJI.")
+                        help="Enzyme preset: 1=MspJI, 2=AspBHI, 3=RlaI, 4=SgrTI, 5=FspEI. Default: MspJI.")
     parser.add_argument("-t", "--context", default=None,
                         help="Methylation-context preset: 1=CpG, 2=CHG. Default: CpG when supported.")
     parser.add_argument("-o", "--output-dir", default=None,
@@ -527,8 +522,6 @@ def main() -> None:
             raise ValueError("-n/--max-low-quality-bases must be >= 0.")
 
         structure = resolve_structure(args)
-        if structure["mode"] == "preset" and PRESETS[structure["enzyme"]].get("legacy"):
-            print("WARNING: FspEI is retained as a legacy preset for historical/existing datasets.", file=sys.stderr)
 
         samples_path = Path(args.samples).expanduser().resolve()
         if not samples_path.is_file():

@@ -10,9 +10,8 @@ usage() {
   cat <<USAGE
 Usage: bash install.sh [--force]
 
-Creates the validated Linux x86_64 Conda environment named i2bRAD-M from the
-explicit lock file, installs validated SOAP2 2.19, and runs the environment
-checker.
+Creates the Linux x86_64 Conda environment named i2bRAD-M from the explicit
+lock file, installs SOAP2 2.19, and runs the environment checker.
 
   --force   remove an existing i2bRAD-M environment before reinstalling
 USAGE
@@ -31,7 +30,7 @@ if ! command -v conda >/dev/null 2>&1; then
 fi
 
 if [[ "$(uname -s)" != "Linux" || "$(uname -m)" != "x86_64" ]]; then
-  echo "ERROR: this validated lock targets Linux x86_64 only." >&2
+  echo "ERROR: this package lock targets Linux x86_64 only." >&2
   exit 1
 fi
 
@@ -40,9 +39,7 @@ if [[ ! -r "$LOCK_FILE" ]]; then
   exit 1
 fi
 
-# Exact-lock installation itself does not need these utilities, but current
-# i2bRAD-M workflows do. Fail early rather than allowing a later workflow to
-# fail mysteriously.
+# Host utilities required by the i2bRAD-M workflows.
 for x in gzip wget sha256sum ldd; do
   if ! command -v "$x" >/dev/null 2>&1; then
     echo "ERROR: required host utility not found: $x" >&2
@@ -50,8 +47,7 @@ for x in gzip wget sha256sum ldd; do
   fi
 done
 
-# The validated host used glibc 2.17. Reject an explicitly detected older glibc
-# without relying on a pre-existing Python interpreter.
+# Check the minimum supported glibc version without requiring Python.
 if command -v getconf >/dev/null 2>&1; then
   libc_line="$(getconf GNU_LIBC_VERSION 2>/dev/null || true)"
   libc_ver="${libc_line#glibc }"
@@ -85,11 +81,10 @@ if (( exists )); then
   fi
 fi
 
-echo "===== CREATE $ENV_NAME FROM VALIDATED EXACT LOCK ====="
+echo "===== CREATE $ENV_NAME FROM PACKAGE LOCK ====="
 conda create -n "$ENV_NAME" --file "$LOCK_FILE" -y
 
-# Prevent packages installed under ~/.local from shadowing the validated Conda
-# packages whenever this environment is activated.
+# Keep the environment isolated from packages installed under ~/.local.
 echo "===== ISOLATE PYTHON PACKAGES ====="
 conda env config vars set -n "$ENV_NAME" PYTHONNOUSERSITE=1
 
@@ -97,7 +92,7 @@ echo "===== ACTIVATE ====="
 conda activate "$ENV_NAME"
 echo "CONDA_PREFIX=$CONDA_PREFIX"
 
-echo "===== INSTALL VALIDATED SOAP2 2.19 ====="
+echo "===== INSTALL SOAP2 2.19 ====="
 bash "$ROOT_DIR/scripts/install_soap2.sh"
 hash -r
 

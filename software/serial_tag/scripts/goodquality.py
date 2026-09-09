@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Step 2: reproduce the training-document quality rule."""
+"""Step 2: apply the read-quality filtering rule."""
 from __future__ import annotations
 import argparse
 import sys

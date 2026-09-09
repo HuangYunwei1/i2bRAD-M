@@ -42,7 +42,7 @@ def recover_one(inp: Path, out: Path, enzyme: dict, patterns, hit_policy: str):
 def main() -> int:
     parser = argparse.ArgumentParser(description="Serial2BRAD16 step 7: batch-recover exact enzyme-defined sample tags from all T1-T5 candidate FASTA files.")
     parser.add_argument("-d", "--input-dir", help="Directory mode (recommended: split5Data).")
-    parser.add_argument("-r", "-i", "--input", dest="input", help="Expert compatibility mode: one T1-T5 candidate FASTA.")
+    parser.add_argument("-r", "-i", "--input", dest="input", help="One T1-T5 candidate FASTA file.")
     parser.add_argument("-e", "--enzyme", required=True, type=int, choices=range(1, 17), help="One global enzyme preset ID (1-16 only).")
     parser.add_argument("-o", "--output", help="Output FASTA(.gz); valid only with one input file.")
     parser.add_argument("--outdir", default="tagData")

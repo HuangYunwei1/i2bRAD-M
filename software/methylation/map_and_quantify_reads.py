@@ -17,11 +17,11 @@ from pathlib import Path
 from typing import Iterator, List, Tuple
 
 PRESETS = {
-    "MspJI": {"aliases": {"1", "mspji"}, "legacy": False, "contexts": {"CpG", "CHG"}},
-    "AspBHI": {"aliases": {"2", "aspbhi"}, "legacy": False, "contexts": {"CpG", "CHG"}},
-    "RlaI": {"aliases": {"3", "rlai"}, "legacy": False, "contexts": {"CHG"}},
-    "SgrTI": {"aliases": {"4", "sgrti"}, "legacy": False, "contexts": {"CpG", "CHG"}},
-    "FspEI": {"aliases": {"5", "fspei"}, "legacy": True, "contexts": {"CpG", "CHG"}},
+    "MspJI": {"aliases": {"1", "mspji"}, "contexts": {"CpG", "CHG"}},
+    "AspBHI": {"aliases": {"2", "aspbhi"}, "contexts": {"CpG", "CHG"}},
+    "RlaI": {"aliases": {"3", "rlai"}, "contexts": {"CHG"}},
+    "SgrTI": {"aliases": {"4", "sgrti"}, "contexts": {"CpG", "CHG"}},
+    "FspEI": {"aliases": {"5", "fspei"}, "contexts": {"CpG", "CHG"}},
 }
 
 CONTEXT_ALIASES = {
@@ -542,7 +542,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-i", "--samples", required=True,
                         help="The same samples.tsv used for read extraction.")
     parser.add_argument("-e", "--enzyme", default=None,
-                        help="Enzyme preset: 1=MspJI, 2=AspBHI, 3=RlaI, 4=SgrTI, 5=FspEI (legacy). Default: MspJI.")
+                        help="Enzyme preset: 1=MspJI, 2=AspBHI, 3=RlaI, 4=SgrTI, 5=FspEI. Default: MspJI.")
     parser.add_argument("-t", "--context", default=None,
                         help="Methylation-context preset: 1=CpG, 2=CHG. Default: CpG when supported.")
     parser.add_argument("-o", "--output-dir", default=None,
@@ -591,8 +591,6 @@ def main() -> None:
         enzyme = normalize_enzyme(args.enzyme)
         context = normalize_context(args.context, enzyme)
         selected_preset = preset_name(enzyme, context)
-        if PRESETS[enzyme].get("legacy"):
-            print("WARNING: FspEI is retained as a legacy preset for historical/existing datasets.", file=sys.stderr)
         reference_dir = (
             Path(args.reference_dir).expanduser().resolve()
             if args.reference_dir else (Path("reference_reads") / selected_preset).resolve()
