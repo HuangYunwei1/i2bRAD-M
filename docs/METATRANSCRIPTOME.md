@@ -4,7 +4,7 @@ This module profiles species-level signals from paired metatranscriptomic reads 
 
 ## Requirements and input stage
 
-`MTKrakenProfiler.py` requires Python 3.9 or later, a Kraken2 executable available in `PATH`, and a compatible Kraken2 database. The Kraken2 database is maintained outside this repository and is supplied with `-d`.
+Kraken2 2.1.2 is included in the unified `i2bRAD-M` Conda environment. Activate the environment before running `MTKrakenProfiler.py`. A compatible Kraken2 database is maintained outside this repository and supplied with `-d`.
 
 Use paired reads that have undergone study-appropriate preprocessing, including quality control and rRNA removal. Tools such as fastp and SortMeRNA may be used for these upstream steps.
 

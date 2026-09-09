@@ -26,7 +26,7 @@ bash install.sh --force
 - `env/i2bRAD-M-linux-64.validated.lock.txt` is the authoritative Linux x86_64 package set used by `install.sh`.
 - `environment.yml` is the readable declaration of direct dependencies.
 - `scripts/install_soap2.sh` installs the included SOAP2 2.19 executables after SHA256 verification.
-- `check_environment.sh` checks executable resolution, package imports, versions, and shared-library availability.
+- `check_environment.sh` checks executable resolution, package imports, versions, and shared-library availability, including Kraken2.
 
 The exact lock avoids dependency re-solving and is the recommended installation route.
 
@@ -46,10 +46,13 @@ The exact lock avoids dependency re-solving and is the recommended installation 
 - SOAP2 2.19 (`soap`, `2bwt-builder`)
 - Bowtie 1.3.0
 - PEAR 0.9.6
+- Kraken2 2.1.2
 - NumPy 1.26.4
 - scikit-learn 0.24.1
 - joblib 1.5.1
 - marisa-trie 0.7.7
 - pysam 0.23.3
+
+A compatible Kraken2 database is prepared separately and supplied to the metatranscriptome workflow with the database argument; database files are not included in the Conda environment or this repository.
 
 See [`VALIDATION.md`](VALIDATION.md) for the validation summary and [`THIRD_PARTY.md`](THIRD_PARTY.md) for third-party software notices.

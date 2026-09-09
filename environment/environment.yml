@@ -35,10 +35,11 @@ dependencies:
   - scipy=1.13.1
   - setuptools=80.9.0
 
-  # Alignment / read-merging tools
+  # Alignment, read-merging, and taxonomic-profiling tools
   - bowtie=1.3.0
   - tbb=2020.2
   - pear=0.9.6
+  - kraken2=2.1.2=pl5262h7d875b9_0
 
   # Utilities used by project scripts. In the exact validated installation,
   # gzip/wget are checked as host utilities because they were not Conda-managed

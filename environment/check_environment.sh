@@ -17,8 +17,14 @@ else
   bad "expected environment '$EXPECTED_ENV'; active prefix is $CONDA_PREFIX"
 fi
 
+if [[ "${PYTHONNOUSERSITE:-}" == "1" ]]; then
+  ok "Python user-site packages are isolated"
+else
+  bad "PYTHONNOUSERSITE=1 is not active; reactivate the environment or reinstall it with install.sh"
+fi
+
 # Programs that must resolve from the active Conda environment.
-for x in python perl soap 2bwt-builder bowtie bowtie-build pear; do
+for x in python perl soap 2bwt-builder bowtie bowtie-build pear kraken2 kraken2-build kraken2-inspect; do
   p="$(command -v "$x" 2>/dev/null || true)"
   if [[ -z "$p" ]]; then
     bad "$x not found"
@@ -103,6 +109,7 @@ expected_meta=(
   'tbb-2020.2-h4bd325d_4.json'
   'pear-0.9.6-h9d449c0_10.json'
   'libzlib-1.3.2-h25fd6f3_3.json'
+  'kraken2-2.1.2-pl5262h7d875b9_0.json'
 )
 meta_missing=0
 for f in "${expected_meta[@]}"; do
@@ -149,6 +156,13 @@ if grep -Fq 'PEAR v0.9.6' <<<"$pear_out"; then
   ok "PEAR version 0.9.6"
 else
   bad "PEAR version check"
+fi
+
+kraken_out="$(kraken2 --version 2>&1 || true)"
+if grep -Fq 'Kraken version 2.1.2' <<<"$kraken_out"; then
+  ok "Kraken2 version 2.1.2"
+else
+  bad "Kraken2 version check"
 fi
 
 # Shared-library sanity checks. SOAP2 2.19 may legitimately be non-dynamic.

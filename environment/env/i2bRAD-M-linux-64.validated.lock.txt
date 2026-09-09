@@ -2,7 +2,7 @@
 # $ conda create --name <env> --file <this file>
 # platform: linux-64
 # Authoritative i2bRAD-M exact package set.
-# Clean-install validated for environment name i2bRAD-M on 2026-08-20.
+# Clean-install validated for environment name i2bRAD-M on 2026-09-09.
 # SOAP2 2.19 is installed separately by scripts/install_soap2.sh.
 @EXPLICIT
 https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
@@ -109,4 +109,5 @@ https://conda.anaconda.org/bioconda/linux-64/perl-class-load-xs-0.10-pl526h6bb02
 https://conda.anaconda.org/bioconda/linux-64/perl-moose-2.2011-pl526hf484d3e_1.tar.bz2
 https://conda.anaconda.org/bioconda/linux-64/perl-moo-2.003004-pl526_0.tar.bz2
 https://conda.anaconda.org/bioconda/linux-64/perl-parallel-forkmanager-2.02-pl526_0.tar.bz2
+https://conda.anaconda.org/bioconda/linux-64/kraken2-2.1.2-pl5262h7d875b9_0.tar.bz2
 https://conda.anaconda.org/bioconda/linux-64/pear-0.9.6-h9d449c0_10.tar.bz2

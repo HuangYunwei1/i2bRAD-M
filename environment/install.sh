@@ -88,6 +88,11 @@ fi
 echo "===== CREATE $ENV_NAME FROM VALIDATED EXACT LOCK ====="
 conda create -n "$ENV_NAME" --file "$LOCK_FILE" -y
 
+# Prevent packages installed under ~/.local from shadowing the validated Conda
+# packages whenever this environment is activated.
+echo "===== ISOLATE PYTHON PACKAGES ====="
+conda env config vars set -n "$ENV_NAME" PYTHONNOUSERSITE=1
+
 echo "===== ACTIVATE ====="
 conda activate "$ENV_NAME"
 echo "CONDA_PREFIX=$CONDA_PREFIX"

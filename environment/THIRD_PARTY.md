@@ -14,6 +14,10 @@ PEAR is installed from the exact Conda package URL recorded in the environment l
 
 Bowtie and its runtime dependencies are installed from the package URLs recorded in the exact Conda lock. Their package files are not stored directly in this repository.
 
+## Kraken2 2.1.2
+
+Kraken2 is installed from the exact Bioconda package URL recorded in the environment lock and is used by the metatranscriptome profiling module. Kraken2 database files are not distributed with this repository and remain subject to the terms and provenance of their respective providers.
+
 ## Conda packages
 
 All packages retrieved by Conda retain their upstream licenses and notices. Package names, versions, builds, channels, and exact artifact URLs are recorded in `env/i2bRAD-M-linux-64.validated.lock.txt`.

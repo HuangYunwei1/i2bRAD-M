@@ -53,7 +53,7 @@ conda activate i2bRAD-M
 cd ..
 ```
 
-`environment/install.sh` uses the exact Linux package lock in `environment/env/` and installs the included SOAP2 executables after checksum verification. The readable `environment/environment.yml` is provided for dependency inspection; the exact lock is the reproducible installation route. See [`environment/README.md`](environment/README.md).
+`environment/install.sh` uses the exact Linux package lock in `environment/env/` and installs the included SOAP2 executables after checksum verification. The unified environment includes Kraken2 for metatranscriptomic taxonomic profiling. The readable `environment/environment.yml` is provided for dependency inspection; the exact lock is the reproducible installation route. See [`environment/README.md`](environment/README.md).
 
 ## Workflow guides
 
@@ -121,7 +121,7 @@ python3 software/metatranscriptome/RNADNARatio.py \
   -o results/RNA_DNA_ratio
 ```
 
-Kraken2 is required for RNA taxonomic profiling. Quality control and rRNA removal are upstream preprocessing steps and may be performed with the tools selected for the study.
+Kraken2 is included in the unified `i2bRAD-M` environment for RNA taxonomic profiling. Prepare a compatible Kraken2 database separately and supply its path with `-d`. Quality control and rRNA removal are upstream preprocessing steps and may be performed with the tools selected for the study.
 
 ### 5. Methylation analysis
 
