@@ -17,6 +17,18 @@ GCF_000005845.2	Bacteria	Pseudomonadota	Gammaproteobacteria	Enterobacterales	Ent
 
 Specify one enzyme identifier from `1` to `16` with `-e`, or use `-e 17` (`AllEnzyme`) to process all 16 enzymes separately. The enzyme must match the wet-lab library and downstream MAP2B analysis.
 
+## Download a pre-built database
+
+Pre-built GTDB database lists are provided for BsaXI (`3`), BcgI (`5`), and CjePI (`13`). For example:
+
+```bash
+python3 software/map2b/scripts/DownloadDB.py \
+  -l software/map2b/config/GTDB.BcgI.database.list \
+  -d /path/to/GTDB_BcgI
+```
+
+Substitute `GTDB.BsaXI.database.list` or `GTDB.CjePI.database.list` to download the corresponding database. The downloader verifies every file against the MD5 value recorded in the selected list.
+
 ## Build (`-m 1`)
 
 ```bash

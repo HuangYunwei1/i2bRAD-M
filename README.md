@@ -116,7 +116,19 @@ python3 software/database_builder/MAP2BDatabaseBuilder.py \
   -m 3 -d /path/database
 ```
 
-#### 1.2 Extend a database for holo-genome, absolute-quantification, or eDNA analysis
+#### 1.2 Download a pre-built microbial database
+
+Pre-built GTDB databases are available for BsaXI, BcgI, and CjePI. For example, download the BcgI database with:
+
+```bash
+python3 software/map2b/scripts/DownloadDB.py \
+  -l software/map2b/config/GTDB.BcgI.database.list \
+  -d /path/to/GTDB_BcgI
+```
+
+Use the corresponding `GTDB.BsaXI.database.list` or `GTDB.CjePI.database.list` file for the other enzymes.
+
+#### 1.3 Extend a database for holo-genome, absolute-quantification, or eDNA analysis
 
 ```bash
 python3 software/database_builder/MAP2BDatabaseBuilder.py \
