@@ -10,7 +10,7 @@ From the repository root:
 cd environment
 bash install.sh
 conda activate i2bRAD-M
-./check_environment.sh
+bash check_environment.sh
 cd ..
 ```
 

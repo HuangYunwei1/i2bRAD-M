@@ -81,7 +81,7 @@ The supplied environment targets **Linux x86_64 with glibc >= 2.17**. From the r
 cd environment
 bash install.sh
 conda activate i2bRAD-M
-./check_environment.sh
+bash check_environment.sh
 cd ..
 ```
 

@@ -75,7 +75,7 @@ if (( exists )); then
     conda env remove -n "$ENV_NAME" -y
   else
     echo "ERROR: Conda environment '$ENV_NAME' already exists." >&2
-    echo "Run 'conda activate $ENV_NAME && ./check_environment.sh' to check it," >&2
+    echo "Run 'conda activate $ENV_NAME && bash check_environment.sh' to check it," >&2
     echo "or reinstall explicitly with: bash install.sh --force" >&2
     exit 2
   fi

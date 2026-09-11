@@ -7,7 +7,7 @@ Activate the unified environment and run its checker:
 ```bash
 cd environment
 conda activate i2bRAD-M
-./check_environment.sh
+bash check_environment.sh
 cd ..
 ```
 
