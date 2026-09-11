@@ -11,7 +11,7 @@ Use a tab-separated plain-text or gzip-compressed table with at least nine colum
 GCF_000005845.2	Bacteria	Pseudomonadota	Gammaproteobacteria	Enterobacterales	Enterobacteriaceae	Escherichia	Escherichia_coli	/path/GCF_000005845.2.fna.gz
 ```
 
-`source_id` must be unique; each FASTA must exist and contain a header. Taxonomy must be consistent across assemblies assigned to the same species. See `examples/Reference_database_construction/database_genomes.tsv`.
+`source_id` must be unique; each FASTA must exist and contain a header. Taxonomy must be consistent across assemblies assigned to the same species. See `examples/01_Reference_database_construction/database_genomes.tsv`.
 
 ## Enzyme selection
 

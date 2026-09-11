@@ -17,7 +17,7 @@ sample01<TAB>/absolute/path/sample01.fastq.gz
 sample02<TAB>/absolute/path/sample02_R1.fastq.gz<TAB>/absolute/path/sample02_R2.fastq.gz
 ```
 
-Use unique sample IDs and preferably absolute paths. A template is at `examples/Standard_MAP2B/map2b_samples.tsv`.
+Use unique sample IDs and preferably absolute paths. A template is at `examples/02_Standard_MAP2B/MAP2B/map2b_samples.tsv`.
 
 ## Required consistency
 

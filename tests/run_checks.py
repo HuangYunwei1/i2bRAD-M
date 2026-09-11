@@ -68,13 +68,14 @@ for relative in [
     "software/absolute_quantification/MAP2BAbsoluteQuantifier.py",
     "software/host_snp/ENZYME_TABLE.tsv",
     "software/methylation/PRESET_TABLE.tsv",
-    "docs/Multi-omics/EPIGENOME.md",
-    "docs/eDNA/SERIAL_TAG.md",
-    "docs/Multi-omics/METATRANSCRIPTOME.md",
+    "docs/03_Multi-omics/Epigenome/EPIGENOME.md",
+    "docs/05_eDNA/Serial_sequencing/SERIAL_TAG.md",
+    "docs/03_Multi-omics/Metatranscriptome/METATRANSCRIPTOME.md",
     "software/serial_tag/config/enzymes.json",
-    "examples/Standard_MAP2B/map2b_samples.tsv",
-    "examples/eDNA/serial_tag_samples.tsv",
-    "examples/Multi-omics/Metatranscriptome/metatranscriptome_samples.tsv",
+    "examples/02_Standard_MAP2B/MAP2B/map2b_samples.tsv",
+    "examples/04_Holo-genome/Host-SNP_genotype_analysis/README.md",
+    "examples/05_eDNA/Serial_sequencing/serial_tag_samples.tsv",
+    "examples/03_Multi-omics/Metatranscriptome/metatranscriptome_samples.tsv",
 ]:
     report((ROOT / relative).is_file(), f"required file {relative}")
 
@@ -148,8 +149,8 @@ except Exception as exc:
     report(False, "serial-tag 16-enzyme configuration", str(exc))
 
 for manifest, expected_header in [
-    (ROOT / "examples/eDNA/serial_tag_samples.tsv", "library_id\tr1\tr2\tt1\tt2\tt3\tt4\tt5"),
-    (ROOT / "examples/Multi-omics/Metatranscriptome/metatranscriptome_samples.tsv", "sample_id\tread1\tread2"),
+    (ROOT / "examples/05_eDNA/Serial_sequencing/serial_tag_samples.tsv", "library_id\tr1\tr2\tt1\tt2\tt3\tt4\tt5"),
+    (ROOT / "examples/03_Multi-omics/Metatranscriptome/metatranscriptome_samples.tsv", "sample_id\tread1\tread2"),
 ]:
     first_line = manifest.read_text(encoding="utf-8-sig").splitlines()[0] if manifest.is_file() else ""
     report(first_line == expected_header, f"manifest header {manifest.relative_to(ROOT)}")

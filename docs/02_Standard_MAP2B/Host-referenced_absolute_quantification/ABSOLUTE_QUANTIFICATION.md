@@ -34,7 +34,7 @@ sample01	2000000	0.5	100	10
 ```bash
 python3 software/absolute_quantification/MAP2BAbsoluteQuantifier.py \
   -i results/map2b/Abundance.xls \
-  -m examples/Host-referenced_absolute_quantification/absolute_quantification_metadata.tsv \
+  -m examples/02_Standard_MAP2B/Host-referenced_absolute_quantification/absolute_quantification_metadata.tsv \
   -s <host_name_exactly_as_in_Species> \
   -o results/absolute_quantification
 ```

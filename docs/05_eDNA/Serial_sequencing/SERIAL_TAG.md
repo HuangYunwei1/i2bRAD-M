@@ -56,7 +56,7 @@ For multiple libraries, the complete workflow can also be run with the controlle
 ```bash
 cd software/serial_tag
 python3 serial2brad.py \
-  -i ../../examples/eDNA/serial_tag_samples.tsv \
+  -i ../../examples/05_eDNA/Serial_sequencing/serial_tag_samples.tsv \
   -e <enzyme_id> -o ../../results/serial_tag -p 4
 ```
 

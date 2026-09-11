@@ -41,18 +41,31 @@ i2bRAD-M/
 │   ├── host_snp/                 Type IIB host SNP workflow
 │   └── serial_tag/               five-tag serial-library preprocessing
 ├── docs/                         module-based workflow documentation
-│   ├── Reference_database_construction/
-│   ├── Standard_MAP2B/
-│   ├── Host-referenced_absolute_quantification/
-│   ├── Multi-omics/
-│   ├── Holo-genome/
-│   └── eDNA/
+│   ├── 01_Reference_database_construction/
+│   ├── 02_Standard_MAP2B/
+│   │   ├── MAP2B/
+│   │   └── Host-referenced_absolute_quantification/
+│   ├── 03_Multi-omics/
+│   │   ├── Metatranscriptome/
+│   │   └── Epigenome/
+│   ├── 04_Holo-genome/
+│   │   └── Host-SNP_genotype_analysis/
+│   └── 05_eDNA/
+│       ├── Cross-domain_profiling/
+│       └── Serial_sequencing/
 ├── examples/                     module-based templates and example tables
-│   ├── Reference_database_construction/
-│   ├── Standard_MAP2B/
-│   ├── Host-referenced_absolute_quantification/
-│   ├── Multi-omics/
-│   └── eDNA/
+│   ├── 01_Reference_database_construction/
+│   ├── 02_Standard_MAP2B/
+│   │   ├── MAP2B/
+│   │   └── Host-referenced_absolute_quantification/
+│   ├── 03_Multi-omics/
+│   │   ├── Metatranscriptome/
+│   │   └── Epigenome/
+│   ├── 04_Holo-genome/
+│   │   └── Host-SNP_genotype_analysis/
+│   └── 05_eDNA/
+│       ├── Cross-domain_profiling/
+│       └── Serial_sequencing/
 ├── data/                         data-availability guidance
 ├── tests/                        repository and interface checks
 └── SHA256SUMS.txt                file-integrity checksums
@@ -78,14 +91,14 @@ cd ..
 
 | Article section or module | Analysis | Main program(s) | Documentation |
 |---|---|---|---|
-| Reference database construction | Build, update, and validate MAP2B databases | `software/database_builder/MAP2BDatabaseBuilder.py` | [`docs/Reference_database_construction/DATABASE_BUILDER.md`](docs/Reference_database_construction/DATABASE_BUILDER.md) |
-| Standard MAP2B analysis | Microbial relative abundance | `software/map2b/bin/MAP2B.py` | [`docs/Standard_MAP2B/MAP2B.md`](docs/Standard_MAP2B/MAP2B.md) |
-| (Optional) Host-referenced absolute quantification | Host-referenced absolute quantification | `software/absolute_quantification/MAP2BAbsoluteQuantifier.py` | [`docs/Host-referenced_absolute_quantification/ABSOLUTE_QUANTIFICATION.md`](docs/Host-referenced_absolute_quantification/ABSOLUTE_QUANTIFICATION.md) |
-| Extended module A: Multi-omics | Metatranscriptome analysis | programs in `software/metatranscriptome/` | [`docs/Multi-omics/METATRANSCRIPTOME.md`](docs/Multi-omics/METATRANSCRIPTOME.md) |
-| Extended module A: Multi-omics | Epigenome analysis (MethylRAD-based) | programs in `software/methylation/` | [`docs/Multi-omics/EPIGENOME.md`](docs/Multi-omics/EPIGENOME.md) |
-| Extended module B: Holo-genome | Host-SNP genotype analysis and microbiome identification | programs in `software/host_snp/` and `software/map2b/bin/MAP2B.py` | [`docs/Holo-genome/HOST_SNP.md`](docs/Holo-genome/HOST_SNP.md), [`docs/Standard_MAP2B/MAP2B.md`](docs/Standard_MAP2B/MAP2B.md) |
-| Extended module C: eDNA | Cross-domain profiling of single-tag libraries | `software/map2b/bin/MAP2B-Cross-domain.py` | [`docs/eDNA/CROSS_DOMAIN.md`](docs/eDNA/CROSS_DOMAIN.md) |
-| Extended module C: eDNA | Serial sequencing analysis for eDNA profiling | programs in `software/serial_tag/` | [`docs/eDNA/SERIAL_TAG.md`](docs/eDNA/SERIAL_TAG.md) |
+| Reference database construction | Build, update, and validate MAP2B databases | `software/database_builder/MAP2BDatabaseBuilder.py` | [`docs/01_Reference_database_construction/DATABASE_BUILDER.md`](docs/01_Reference_database_construction/DATABASE_BUILDER.md) |
+| Standard MAP2B analysis | Microbial relative abundance | `software/map2b/bin/MAP2B.py` | [`docs/02_Standard_MAP2B/MAP2B/MAP2B.md`](docs/02_Standard_MAP2B/MAP2B/MAP2B.md) |
+| (Optional) Host-referenced absolute quantification | Host-referenced absolute quantification | `software/absolute_quantification/MAP2BAbsoluteQuantifier.py` | [`docs/02_Standard_MAP2B/Host-referenced_absolute_quantification/ABSOLUTE_QUANTIFICATION.md`](docs/02_Standard_MAP2B/Host-referenced_absolute_quantification/ABSOLUTE_QUANTIFICATION.md) |
+| Extended module A: Multi-omics | Metatranscriptome analysis | programs in `software/metatranscriptome/` | [`docs/03_Multi-omics/Metatranscriptome/METATRANSCRIPTOME.md`](docs/03_Multi-omics/Metatranscriptome/METATRANSCRIPTOME.md) |
+| Extended module A: Multi-omics | Epigenome analysis (MethylRAD-based) | programs in `software/methylation/` | [`docs/03_Multi-omics/Epigenome/EPIGENOME.md`](docs/03_Multi-omics/Epigenome/EPIGENOME.md) |
+| Extended module B: Holo-genome | Host-SNP genotype analysis and microbiome identification | programs in `software/host_snp/` and `software/map2b/bin/MAP2B.py` | [`docs/04_Holo-genome/Host-SNP_genotype_analysis/HOST_SNP.md`](docs/04_Holo-genome/Host-SNP_genotype_analysis/HOST_SNP.md), [`docs/02_Standard_MAP2B/MAP2B/MAP2B.md`](docs/02_Standard_MAP2B/MAP2B/MAP2B.md) |
+| Extended module C: eDNA | Cross-domain profiling of single-tag libraries | `software/map2b/bin/MAP2B-Cross-domain.py` | [`docs/05_eDNA/Cross-domain_profiling/CROSS_DOMAIN.md`](docs/05_eDNA/Cross-domain_profiling/CROSS_DOMAIN.md) |
+| Extended module C: eDNA | Serial sequencing analysis for eDNA profiling | programs in `software/serial_tag/` | [`docs/05_eDNA/Serial_sequencing/SERIAL_TAG.md`](docs/05_eDNA/Serial_sequencing/SERIAL_TAG.md) |
 
 ## Computational workflow following the protocol
 
@@ -115,19 +128,19 @@ python3 software/database_builder/MAP2BDatabaseBuilder.py \
 
 ```bash
 python3 software/map2b/bin/MAP2B.py \
-  -i examples/Standard_MAP2B/map2b_samples.tsv \
+  -i examples/02_Standard_MAP2B/MAP2B/map2b_samples.tsv \
   -e <enzyme_id> -s /absolute/path/database \
   -o results/map2b -p 4
 ```
 
-i2bRAD-M supports 16 Type IIB restriction enzymes through G-score-based profiling with matching databases. A Random Forest-based workflow is additionally available for BcgI (`5`) and CjePI (`13`). The enzyme identifier must match the library preparation and database; see [`docs/Standard_MAP2B/MAP2B.md`](docs/Standard_MAP2B/MAP2B.md) for database selection and filtering options.
+i2bRAD-M supports 16 Type IIB restriction enzymes through G-score-based profiling with matching databases. A Random Forest-based workflow is additionally available for BcgI (`5`) and CjePI (`13`). The enzyme identifier must match the library preparation and database; see [`docs/02_Standard_MAP2B/MAP2B/MAP2B.md`](docs/02_Standard_MAP2B/MAP2B/MAP2B.md) for database selection and filtering options.
 
 ### 3. Optional host-referenced absolute quantification
 
 ```bash
 python3 software/absolute_quantification/MAP2BAbsoluteQuantifier.py \
   -i results/map2b/Abundance.xls \
-  -m examples/Host-referenced_absolute_quantification/absolute_quantification_metadata.tsv \
+  -m examples/02_Standard_MAP2B/Host-referenced_absolute_quantification/absolute_quantification_metadata.tsv \
   -s <host_species_exactly_as_in_Species_column> \
   -o results/absolute_quantification
 ```
@@ -138,7 +151,7 @@ python3 software/absolute_quantification/MAP2BAbsoluteQuantifier.py \
 
 ```bash
 python3 software/metatranscriptome/MTKrakenProfiler.py \
-  -i examples/Multi-omics/Metatranscriptome/metatranscriptome_samples.tsv \
+  -i examples/03_Multi-omics/Metatranscriptome/metatranscriptome_samples.tsv \
   -d /path/kraken2_database -o results/RNA_profile -p 8
 
 python3 software/metatranscriptome/RNADNARatio.py \
@@ -153,26 +166,26 @@ Provide a compatible Kraken2 database with `-d`. Quality control and rRNA remova
 
 The protocol route uses the default methylation preset, so the default enzyme option is omitted:
 
-CpG and CHG methylation analyses are performed separately using the corresponding `-t` option; see [`docs/Multi-omics/EPIGENOME.md`](docs/Multi-omics/EPIGENOME.md).
+CpG and CHG methylation analyses are performed separately using the corresponding `-t` option; see [`docs/03_Multi-omics/Epigenome/EPIGENOME.md`](docs/03_Multi-omics/Epigenome/EPIGENOME.md).
 
 ```bash
 python3 software/methylation/build_reference_reads.py \
   -r /path/reference.fa.gz
 
 python3 software/methylation/extract_fixed_reads.py \
-  -i examples/Multi-omics/Epigenome/epigenome_samples.tsv
+  -i examples/03_Multi-omics/Epigenome/epigenome_samples.tsv
 
 python3 software/methylation/map_and_quantify_reads.py \
-  -i examples/Multi-omics/Epigenome/epigenome_samples.tsv
+  -i examples/03_Multi-omics/Epigenome/epigenome_samples.tsv
 ```
 
-Additional supported options are documented in [`docs/Multi-omics/EPIGENOME.md`](docs/Multi-omics/EPIGENOME.md).
+Additional supported options are documented in [`docs/03_Multi-omics/Epigenome/EPIGENOME.md`](docs/03_Multi-omics/Epigenome/EPIGENOME.md).
 
 ### 5. Extended module B: Holo-genome analysis
 
 #### 5.1 Host-SNP genotype analysis
 
-Host SNP genotyping uses the stepwise Perl workflow provided in `software/host_snp/`. See [`docs/Holo-genome/HOST_SNP.md`](docs/Holo-genome/HOST_SNP.md) for workspace preparation, host-reference tag construction, mapping, and genotype calling.
+Host SNP genotyping uses the stepwise Perl workflow provided in `software/host_snp/`. See [`docs/04_Holo-genome/Host-SNP_genotype_analysis/HOST_SNP.md`](docs/04_Holo-genome/Host-SNP_genotype_analysis/HOST_SNP.md) for workspace preparation, host-reference tag construction, mapping, and genotype calling.
 
 #### 5.2 Microbiome identification
 
@@ -186,7 +199,7 @@ Single-tag libraries can be analyzed directly:
 
 ```bash
 python3 software/map2b/bin/MAP2B-Cross-domain.py \
-  -i examples/eDNA/cross_domain_samples.tsv \
+  -i examples/05_eDNA/Cross-domain_profiling/cross_domain_samples.tsv \
   -e <enzyme_id> -s /absolute/path/cross_domain_database \
   -o results/cross_domain -p 4
 ```
@@ -197,11 +210,11 @@ For five-tag serial libraries, first demultiplex and recover the corresponding s
 
 ```bash
 python3 software/serial_tag/serial2brad.py \
-  -i examples/eDNA/serial_tag_samples.tsv \
+  -i examples/05_eDNA/Serial_sequencing/serial_tag_samples.tsv \
   -e <enzyme_id> -o results/serial_tag -p 4
 ```
 
-Prepare the MAP2B sample manifest from the recovered single-tag files and run the same cross-domain command. The serial-tag workflow supports 16 Type IIB restriction enzymes; see [`docs/eDNA/SERIAL_TAG.md`](docs/eDNA/SERIAL_TAG.md) and [`docs/eDNA/CROSS_DOMAIN.md`](docs/eDNA/CROSS_DOMAIN.md).
+Prepare the MAP2B sample manifest from the recovered single-tag files and run the same cross-domain command. The serial-tag workflow supports 16 Type IIB restriction enzymes; see [`docs/05_eDNA/Serial_sequencing/SERIAL_TAG.md`](docs/05_eDNA/Serial_sequencing/SERIAL_TAG.md) and [`docs/05_eDNA/Cross-domain_profiling/CROSS_DOMAIN.md`](docs/05_eDNA/Cross-domain_profiling/CROSS_DOMAIN.md).
 
 ## Input templates and data
 
