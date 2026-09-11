@@ -1,4 +1,4 @@
-# Cross-domain eDNA profiling
+# Cross-domain profiling for eDNA
 
 Runner: `software/map2b/bin/MAP2B-Cross-domain.py`.
 
@@ -6,18 +6,18 @@ Run the command from the repository root; the runner uses the accompanying scrip
 
 ## Database
 
-Start from a microbial database and use database-builder mode 2 to add biologically relevant macro-organism genomes. See [`DATABASE_BUILDER.md`](../reference_database/DATABASE_BUILDER.md). Record database composition/genome versions and validate the expanded database.
+Start from a microbial database and use database-builder mode 2 to add biologically relevant macro-organism genomes. See [`DATABASE_BUILDER.md`](../Reference_database_construction/DATABASE_BUILDER.md). Record database composition/genome versions and validate the expanded database.
 
 ## Run
 
 ```bash
 python3 software/map2b/bin/MAP2B-Cross-domain.py \
-  -i examples/edna/cross_domain_samples.tsv \
+  -i examples/eDNA/cross_domain_samples.tsv \
   -e <enzyme_id> -s /absolute/path/cross_domain_database \
   -o results/cross_domain -p 4
 ```
 
-The cross-domain workflow follows the same enzyme, database-selection, and filtering rules as standard MAP2B. The enzyme must match the library and database; see [`MAP2B.md`](../standard_map2b/MAP2B.md).
+The cross-domain workflow follows the same enzyme, database-selection, and filtering rules as standard MAP2B. The enzyme must match the library and database; see [`MAP2B.md`](../Standard_MAP2B/MAP2B.md).
 
 ## Principal outputs
 

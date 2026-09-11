@@ -1,4 +1,4 @@
-# MAP2B database builder
+# Reference database construction
 
 Program: `software/database_builder/MAP2BDatabaseBuilder.py` (v0.3.2). It builds, updates, or validates species-level MAP2B-compatible tag databases for 16 Type IIB restriction enzymes.
 
@@ -11,7 +11,7 @@ Use a tab-separated plain-text or gzip-compressed table with at least nine colum
 GCF_000005845.2	Bacteria	Pseudomonadota	Gammaproteobacteria	Enterobacterales	Enterobacteriaceae	Escherichia	Escherichia_coli	/path/GCF_000005845.2.fna.gz
 ```
 
-`source_id` must be unique; each FASTA must exist and contain a header. Taxonomy must be consistent across assemblies assigned to the same species. See `examples/reference_database/database_genomes.tsv`.
+`source_id` must be unique; each FASTA must exist and contain a header. Taxonomy must be consistent across assemblies assigned to the same species. See `examples/Reference_database_construction/database_genomes.tsv`.
 
 ## Enzyme selection
 

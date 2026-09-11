@@ -1,4 +1,4 @@
-# Serial-tag preprocessing
+# Serial sequencing analysis for eDNA profiling
 
 The serial-tag workflow reconstructs five position-resolved Type IIB restriction tags from paired-end serial-tag libraries. It supports 16 Type IIB restriction enzymes and produces fixed-length FASTA files suitable for MAP2B or MAP2B-Cross-domain analysis.
 
@@ -56,7 +56,7 @@ For multiple libraries, the complete workflow can also be run with the controlle
 ```bash
 cd software/serial_tag
 python3 serial2brad.py \
-  -i ../../examples/edna/serial_tag_samples.tsv \
+  -i ../../examples/eDNA/serial_tag_samples.tsv \
   -e <enzyme_id> -o ../../results/serial_tag -p 4
 ```
 

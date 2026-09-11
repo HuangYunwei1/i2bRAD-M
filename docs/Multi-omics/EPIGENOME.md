@@ -1,4 +1,4 @@
-# Host methylation workflow
+# Epigenome analysis (MethylRAD-based)
 
 The methylation module at `software/methylation/` supports reference-read construction, fixed-length read extraction, and site-level methylation quantification for CpG and CHG contexts.
 
@@ -13,9 +13,9 @@ The default is MspJI (`-e 1`) with CpG (`-t 1`). Because `-e 1` is already defau
 ```bash
 python3 software/methylation/build_reference_reads.py -r /path/reference.fa.gz
 python3 software/methylation/extract_fixed_reads.py \
-  -i examples/multi_omics/methylation_samples.tsv
+  -i examples/Multi-omics/Epigenome/epigenome_samples.tsv
 python3 software/methylation/map_and_quantify_reads.py \
-  -i examples/multi_omics/methylation_samples.tsv
+  -i examples/Multi-omics/Epigenome/epigenome_samples.tsv
 ```
 
 Run all three from the same project working directory so default paths align:

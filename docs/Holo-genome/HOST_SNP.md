@@ -1,4 +1,4 @@
-# Host SNP workflow
+# Host-SNP genotype analysis
 
 Programs in `software/host_snp/` implement tag extraction, reference preparation, SOAP2 mapping, and genotype calling. The manuscript example uses BsaXI (`-e 3`). Use the same enzyme ID for sample and reference.
 
