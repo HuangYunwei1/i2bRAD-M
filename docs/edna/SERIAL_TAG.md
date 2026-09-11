@@ -56,7 +56,7 @@ For multiple libraries, the complete workflow can also be run with the controlle
 ```bash
 cd software/serial_tag
 python3 serial2brad.py \
-  -i ../../examples/manifests/serial_tag_samples.tsv \
+  -i ../../examples/edna/serial_tag_samples.tsv \
   -e <enzyme_id> -o ../../results/serial_tag -p 4
 ```
 
@@ -68,11 +68,13 @@ library_id  r1  r2  t1  t2  t3  t4  t5
 
 `t1` to `t5` assign the five recovered positions to their downstream sample identifiers.
 
-## Main outputs
+## Principal outputs
 
-- `tagData/`: enzyme-defined fixed-length FASTA files and tag-recovery QC tables from the directory workflow;
-- `final_tags/`: sample-level FASTA files from the manifest controller;
-- `map2b_manifests/`: two-column sample manifests for downstream MAP2B analysis;
-- step-specific and batch-level QC tables generated alongside the intermediate files.
+| Output | Format | Description |
+|---|---|---|
+| `tagData/` | FASTA and TSV | Enzyme-defined fixed-length tags and recovery summaries from the directory workflow |
+| `final_tags/` | FASTA | Sample-level recovered tags from the manifest controller |
+| `map2b_manifests/` | TSV | Two-column sample manifests for downstream MAP2B analysis |
+| QC tables | TSV | Step-specific and batch-level processing summaries |
 
 Use unique library and sample identifiers and keep the complete QC output with the analysis record.

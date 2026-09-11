@@ -13,9 +13,9 @@ The default is MspJI (`-e 1`) with CpG (`-t 1`). Because `-e 1` is already defau
 ```bash
 python3 software/methylation/build_reference_reads.py -r /path/reference.fa.gz
 python3 software/methylation/extract_fixed_reads.py \
-  -i examples/manifests/methylation_samples.tsv
+  -i examples/multi_omics/methylation_samples.tsv
 python3 software/methylation/map_and_quantify_reads.py \
-  -i examples/manifests/methylation_samples.tsv
+  -i examples/multi_omics/methylation_samples.tsv
 ```
 
 Run all three from the same project working directory so default paths align:
@@ -37,9 +37,16 @@ Use the same two-column manifest for extraction and mapping, with one single-end
 
 ## Main outputs
 
-- `samples/<sample_id>.sites.tsv.gz`: coordinates, sequence, raw count, RPM, M-index
-- `count_matrix.tsv.gz`, `rpm_matrix.tsv.gz`, `m_index_matrix.tsv.gz`
-- `sample_qc.tsv`, `config.json`, and per-sample mapping logs
+| Output | Format | Description |
+|---|---|---|
+| `samples/<sample_id>.sites.tsv.gz` | Gzip-compressed TSV | Per-site coordinates, sequence, raw count, RPM, and M-index |
+| `count_matrix.tsv.gz` | Gzip-compressed TSV | Raw-count matrix across samples |
+| `rpm_matrix.tsv.gz` | Gzip-compressed TSV | RPM matrix across samples |
+| `m_index_matrix.tsv.gz` | Gzip-compressed TSV | M-index matrix across samples |
+| `sample_qc.tsv` | TSV | Per-sample processing summary |
+| `config.json` | JSON | Run configuration |
+
+The per-sample site table contains `site_id`, `seqname`, `start_1based`, `sequence`, `raw_count`, `rpm`, and `m_index`.
 
 The site-level file is the principal output for downstream analysis.
 

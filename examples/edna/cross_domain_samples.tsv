@@ -1,0 +1,4 @@
+# Single-end: sample_id<TAB>read_file
+edna01	/absolute/path/to/edna01.fastq.gz
+# Paired-end example (uncomment and replace):
+# edna02	/absolute/path/to/edna02_R1.fastq.gz	/absolute/path/to/edna02_R2.fastq.gz

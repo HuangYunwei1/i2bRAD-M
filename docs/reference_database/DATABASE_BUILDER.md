@@ -11,7 +11,7 @@ Use a tab-separated plain-text or gzip-compressed table with at least nine colum
 GCF_000005845.2	Bacteria	Pseudomonadota	Gammaproteobacteria	Enterobacterales	Enterobacteriaceae	Escherichia	Escherichia_coli	/path/GCF_000005845.2.fna.gz
 ```
 
-`source_id` must be unique; each FASTA must exist and contain a header. Taxonomy must be consistent across assemblies assigned to the same species. See `examples/manifests/database_genomes.tsv`.
+`source_id` must be unique; each FASTA must exist and contain a header. Taxonomy must be consistent across assemblies assigned to the same species. See `examples/reference_database/database_genomes.tsv`.
 
 ## Enzyme selection
 
@@ -52,6 +52,16 @@ Mode 2 normally detects the enzyme and shard size from the base database. Existi
 
 Start from a microbial database and use mode 2 to add biologically relevant host, animal, plant, dietary, or other genomes. Validate the completed database before analysis. The enzyme must remain identical across the library, base database, added genomes, and downstream profiling.
 
-## Files to retain
+## Principal outputs
 
-Retain the complete database directory, input manifest, enzyme setting, and Builder version used for the analysis.
+| Output | Description |
+|---|---|
+| `abfh_classify_with_speciename.txt.gz` | Taxonomy and tag-classification table |
+| `<Enzyme>.species.marisa<shard_end>` | Main tag-database shards |
+| `<Enzyme>.species.uniq.marisa` | Unique-tag database |
+| `<Enzyme>.species.uniq.stat.xls` | Unique-tag statistics table |
+| `<Enzyme>.species.database.json` | Database metadata |
+| `genome_id_map.tsv` | Source-to-internal genome identifier map |
+| `new_genome_id_map.tsv` | Identifier map for genomes added in update mode |
+
+Retain the complete database directory, input manifest, enzyme setting, and Builder version used for the analysis. `new_genome_id_map.tsv` is specific to database updates.

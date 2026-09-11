@@ -17,7 +17,7 @@ sample01<TAB>/absolute/path/sample01.fastq.gz
 sample02<TAB>/absolute/path/sample02_R1.fastq.gz<TAB>/absolute/path/sample02_R2.fastq.gz
 ```
 
-Use unique sample IDs and preferably absolute paths. A template is at `examples/manifests/map2b_samples.tsv`.
+Use unique sample IDs and preferably absolute paths. A template is at `examples/standard_map2b/map2b_samples.tsv`.
 
 ## Required consistency
 
@@ -35,7 +35,11 @@ For low-biomass samples, the manuscript recommends evaluating `-g 5`. Record the
 
 ## Principal output
 
-`Abundance.xls` is the species-level relative-abundance table. Despite its extension, it is tab-separated text. Taxonomy columns precede sample columns; the `Species` column is used by the absolute quantifier. Retain the full MAP2B result directory for reproducibility and downstream analysis.
+| Output file | Format | Description |
+|---|---|---|
+| `Abundance.xls` | Tab-separated text | Species-level relative-abundance matrix |
+
+The table begins with `#Kingdom`, `Phylum`, `Class`, `Order`, `Family`, `Genus`, and `Species`, followed by one abundance column per sample. The `Species` column is used by downstream modules such as absolute quantification. Retain the full MAP2B result directory for reproducibility and downstream analysis.
 
 ## Database location
 

@@ -16,7 +16,7 @@ Use a tab-separated file with the required header:
 sample_id  read1  read2
 ```
 
-The header is required, the field names are case-sensitive, and each `sample_id` must be unique. Paths may be absolute or relative to the manifest. Sample identifiers must contain only letters, numbers, `.`, `_`, or `-`. See `examples/manifests/metatranscriptome_samples.tsv`.
+The header is required, the field names are case-sensitive, and each `sample_id` must be unique. Paths may be absolute or relative to the manifest. Sample identifiers must contain only letters, numbers, `.`, `_`, or `-`. See `examples/multi_omics/metatranscriptome_samples.tsv`.
 
 ## Species-level RNA profiling
 
@@ -24,7 +24,7 @@ From the repository root:
 
 ```bash
 python3 software/metatranscriptome/MTKrakenProfiler.py \
-  -i examples/manifests/metatranscriptome_samples.tsv \
+  -i examples/multi_omics/metatranscriptome_samples.tsv \
   -d /path/to/kraken2_database \
   -o results/RNA_profile -p 8
 ```
@@ -61,4 +61,4 @@ Supporting outputs include `sample_summary.tsv`, `unmatched_samples.tsv`, `unmat
 
 ## Example tables
 
-Small example DNA and RNA abundance tables are provided under `examples/metatranscriptome/` for checking table structure and the integration command.
+Small example DNA and RNA abundance tables are provided under `examples/multi_omics/metatranscriptome/` for checking table structure and the integration command.

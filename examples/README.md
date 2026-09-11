@@ -1,14 +1,13 @@
-# Input and example files
+# Input templates and example tables
 
-This directory provides tab-delimited templates and compact example tables for the computational workflows:
+This directory follows the analysis modules in the accompanying protocol:
 
-- `manifests/map2b_samples.tsv`: MAP2B sample list;
-- `manifests/methylation_samples.tsv`: methylation sample list;
-- `manifests/database_genomes.tsv`: database-builder genome manifest;
-- `manifests/absolute_quantification_metadata.tsv`: host-concentration metadata;
-- `manifests/absolute_quantification_metadata_with_volumes.tsv`: optional library-equivalent metadata;
-- `manifests/serial_tag_samples.tsv`: serial-tag library and T1-T5 sample assignments;
-- `manifests/metatranscriptome_samples.tsv`: paired metatranscriptome read manifest; and
-- `metatranscriptome/`: compact DNA and RNA abundance tables for the integration step.
+| Module | Files |
+|---|---|
+| `reference_database/` | Genome manifest for MAP2B database construction |
+| `standard_map2b/` | Standard MAP2B sample manifest |
+| `absolute_quantification/` | Host-concentration metadata templates, with optional library volumes |
+| `multi_omics/` | Metatranscriptome and methylation manifests, plus compact RNA/DNA integration tables |
+| `edna/` | Cross-domain and five-tag serial-library manifests |
 
 Copy the relevant template to a working directory, replace the example values and paths, and preserve tab delimiters. Store large input and output files outside the Git repository.

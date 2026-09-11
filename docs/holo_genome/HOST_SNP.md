@@ -75,4 +75,15 @@ Confirm the exact sample filename before copying. `reads_map.pl` expects this re
 perl "$SCRIPTS/codom_calling.pl" -c 0.3 -m 0.05
 ```
 
-`-c` is call-rate (0–1); `-m` is minor-allele frequency (0–0.5). Preserve `sample_order.txt`; it defines sample-column order. Principal outputs are under `genotype/`, including `all_codom` and `filter_of_all_codom`.
+`-c` is call-rate (0–1); `-m` is minor-allele frequency (0–0.5). Preserve `sample_order.txt`; it defines sample-column order.
+
+## Principal outputs
+
+| Output | Description |
+|---|---|
+| `sample_order.txt` | Sample-column order used in genotype tables |
+| `reads_mapping/<sample>.Bs` | Per-sample mapping result |
+| `genotype/all_codom` | All called codominant loci |
+| `genotype/filter_of_all_codom` | Loci retained after call-rate and minor-allele-frequency filtering |
+
+The two genotype tables contain tag ID, reference-tag sequence, position within the tag, reference base, and sample genotypes in the order recorded by `sample_order.txt`. Missing calls are represented by `--`.

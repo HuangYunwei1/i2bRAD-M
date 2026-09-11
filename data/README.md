@@ -5,7 +5,7 @@ Large sequencing datasets, reference genomes, and MAP2B databases are not stored
 For local analyses:
 
 - store large data outside the Git checkout;
-- use absolute paths in the tab-delimited manifests under `examples/manifests/`;
+- use absolute paths in the module-specific tab-delimited templates under `examples/`;
 - use the same Type IIB enzyme setting for library preparation, database construction, and profiling;
 - record reference-database versions, source accessions, retrieval dates, and file checksums; and
 - do not commit controlled-access or personally identifiable data.

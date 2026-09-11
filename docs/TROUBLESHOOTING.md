@@ -34,7 +34,7 @@ Run the database-builder validation mode before profiling.
 
 ## Absolute quantification cannot match samples or host rows
 
-Match metadata `sample_id` values exactly to the abundance-table sample columns. The value supplied with `-s` must exactly match a value in the `Species` column. Use a five-column metadata table only with the corresponding concentration/volume option described in [`ABSOLUTE_QUANTIFICATION.md`](ABSOLUTE_QUANTIFICATION.md).
+Match metadata `sample_id` values exactly to the abundance-table sample columns. The value supplied with `-s` must exactly match a value in the `Species` column. Use a five-column metadata table only with the corresponding concentration/volume option described in [`ABSOLUTE_QUANTIFICATION.md`](absolute_quantification/ABSOLUTE_QUANTIFICATION.md).
 
 ## Methylation stages cannot find earlier outputs
 

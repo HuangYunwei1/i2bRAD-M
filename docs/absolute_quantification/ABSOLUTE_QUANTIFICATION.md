@@ -34,16 +34,20 @@ sample01	2000000	0.5	100	10
 ```bash
 python3 software/absolute_quantification/MAP2BAbsoluteQuantifier.py \
   -i results/map2b/Abundance.xls \
-  -m examples/manifests/absolute_quantification_metadata.tsv \
+  -m examples/absolute_quantification/absolute_quantification_metadata.tsv \
   -s <host_name_exactly_as_in_Species> \
   -o results/absolute_quantification
 ```
 
 Add `-c` and use the five-column template to calculate library equivalents.
 
-## Outputs
+## Principal outputs
 
-- `AbsoluteConcentration.xls`: estimated cells/mL.
-- `LibraryCellEquivalent.xls`: generated only with `-c`.
+| Output file | Format | Description |
+|---|---|---|
+| `AbsoluteConcentration.xls` | Tab-separated text | Host-referenced concentration estimates in cells/mL |
+| `LibraryCellEquivalent.xls` | Tab-separated text | Library cell-equivalent estimates; generated only with `-c` |
+
+Both tables retain the MAP2B taxonomy columns followed by sample columns.
 
 The result is host-referenced, not an independent direct count. Report host measurement, database composition, naming, and assumptions with the output.
