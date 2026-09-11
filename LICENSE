@@ -1,10 +1,21 @@
-Copyright (c) 2026 the i2bRAD-M authors. All rights reserved.
+The i2bRAD-M software is licensed under the MIT license.
 
-The software and documentation in this repository may be viewed and evaluated
-for scholarly and research purposes. No permission is granted by this notice to
-redistribute, sublicense, or incorporate the repository contents into another
-work without authorization from the applicable copyright holders.
+Copyright (c) 2026 Ocean University of China
 
-Third-party software and data remain subject to the rights and terms of their
-respective authors and distributors. See environment/THIRD_PARTY.md for the
-third-party components included in or installed by the environment package.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
