@@ -14,3 +14,5 @@ This directory follows the analysis modules in the accompanying protocol:
 | `05_eDNA/Serial_sequencing/` | Five-tag serial-library manifest |
 
 Copy the relevant template to a working directory, replace the example values and paths, and preserve tab delimiters. Store large input and output files outside the Git repository.
+
+For a compact executable workflow demonstration with selected expected outputs, download the [i2bRAD-M Demo from Zenodo](https://doi.org/10.5281/zenodo.22719104).

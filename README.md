@@ -87,6 +87,24 @@ cd ..
 
 `environment/install.sh` creates the unified environment from the supplied Linux package lock and installs the included SOAP2 executables. The readable `environment/environment.yml` lists the direct dependencies. See [`environment/README.md`](environment/README.md).
 
+## Quick Demo
+
+A compact demonstration dataset with runnable examples and selected expected outputs is archived on Zenodo:
+
+- DOI: [`10.5281/zenodo.22719104`](https://doi.org/10.5281/zenodo.22719104)
+- Archive: `i2bRAD-M_Demo_v1.0.tar.gz` (approximately 22 MB)
+
+```bash
+wget "https://zenodo.org/records/22719104/files/i2bRAD-M_Demo_v1.0.tar.gz?download=1" \
+  -O i2bRAD-M_Demo_v1.0.tar.gz
+tar -xzf i2bRAD-M_Demo_v1.0.tar.gz
+export I2BRADM_ROOT=/path/to/i2bRAD-M
+cd i2bRAD-M_Demo_v1.0/02_Standard_MAP2B/MAP2B
+bash run_demo.sh
+```
+
+The complete module list and output locations are provided in [`docs/DEMO.md`](docs/DEMO.md).
+
 ## Workflow guides
 
 | Article section or module | Analysis | Main program(s) | Documentation |
@@ -230,7 +248,7 @@ Prepare the MAP2B sample manifest from the recovered single-tag files and run th
 
 ## Input templates and data
 
-Input manifests and small example files are provided under `examples/`. Replace the example paths and identifiers with values for the current analysis. Large sequencing datasets and reference databases are maintained outside this source-code repository; consult the article's data-availability statement and [`data/README.md`](data/README.md).
+Input manifests and small example files are provided under `examples/`. Replace the example paths and identifiers with values for the current analysis. The compact workflow Demo is available from [Zenodo](https://doi.org/10.5281/zenodo.22719104). Study-data accessions and database guidance are provided in [`data/README.md`](data/README.md).
 
 ## Verification
 
