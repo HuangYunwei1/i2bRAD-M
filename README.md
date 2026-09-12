@@ -263,4 +263,6 @@ These commands check the repository interfaces and file integrity.
 
 ## Citation and use
 
+Software releases are archived on Zenodo under concept DOI [`10.5281/zenodo.22721518`](https://doi.org/10.5281/zenodo.22721518); the DOI for release `v0.1.0` is [`10.5281/zenodo.22721519`](https://doi.org/10.5281/zenodo.22721519).
+
 Please cite the accompanying Nature Protocols article when using this workflow. The repository contents are provided under the terms in [`LICENSE`](LICENSE); bundled third-party components remain subject to their respective terms as described in [`environment/THIRD_PARTY.md`](environment/THIRD_PARTY.md).
